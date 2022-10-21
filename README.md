@@ -20,8 +20,6 @@ Please use R version >= 4.2. The package is on CRAN, it can be installed using
 `install.packages("rswipl")` from the R environment. The current sources can be
 installed using 
 
-`install.packages('rmarkdown')`
-
 `install.packages('remotes')`
 
 `remotes::install_github('mgondan/rswipl')`
