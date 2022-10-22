@@ -10,6 +10,7 @@
 ^src/swipl-devel/packages/bdb/
 ^src/swipl-devel/packages/yaml/
 ^src/swipl-devel/packages/utf8proc/
+^src/swipl-devel/packages/sweep
 ^src/swipl-devel/packages/cppproxy/
 ^src/swipl-devel/packages/paxos/
 ^src/swipl-devel/packages/mqi/
