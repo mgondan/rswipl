@@ -41,6 +41,9 @@
 
 .onUnload <- function(libpath)
 {
+  # See .onLoad for details
+  library.dynam.unload("rswipl", libpath=libpath)
+
   if(.Platform$OS.type == "unix")
   {
     fp <- file.path(libpath, "swipl", "lib", "swipl", "lib")
