@@ -34,6 +34,8 @@
     dyn.load(file.path(folder, paste("libswipl", .Platform$dynlib.ext, sep="")))
   }
 
+  # Load rolog.dll/so
+  library.dynam(chname="rswipl", package=pkgname, lib.loc=libname, local=FALSE)
   invisible()
 }
 
