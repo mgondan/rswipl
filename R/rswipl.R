@@ -65,10 +65,6 @@
     folder <- file.path(libpath, "swipl", "bin")
     dyn.unload(file.path(folder, paste("libswipl", .Platform$dynlib.ext, sep="")))
   }
-
-  # Load rswipl.dll/so
-  library.dynam(chname="rswipl", package=pkgname, lib.loc=libname, local=FALSE)
-  invisible()
 }
 
 .onAttach <- function(libname, pkgname)
