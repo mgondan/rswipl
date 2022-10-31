@@ -5,7 +5,7 @@ Version: 8.5.20
 Date: 2022-10-21
 Author: Matthias Gondan
 Maintainer: Matthias Gondan <Matthias.Gondan-Rochon@uibk.ac.at>
-Description: This R package embeds 'SWI'-'Prolog', <https://www.swi-prolog.org/>, into an R package. This package is normally not invoked directly. Please refer to package 'rolog' instead or install 'SWI'-'Prolog' on your system.
+Description: Interface to 'SWI'-'Prolog', <https://www.swi-prolog.org/>. This package is normally not loaded directly, please refer to package 'rolog' instead. The purpose of this package is to provide the 'Prolog' runtime on systems that do not have a software installation of 'SWI'-'Prolog'.
 License: FreeBSD
 Imports: Rcpp (>= 1.0.7)
 Depends: R (>= 4.2)
