@@ -1,6 +1,6 @@
 Package: rswipl
 Type: Package
-Title: Embed 'SWI'-'Prolog' into an R Package
+Title: Embed 'SWI'-'Prolog'
 Version: 8.5.20
 Date: 2022-10-21
 Author: Matthias Gondan
