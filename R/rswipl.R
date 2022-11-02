@@ -19,7 +19,19 @@
       arch <- 'arm64'
     folder <- dir(fp, pattern=arch, full.names=TRUE)
     if(!length(folder) & arch == "arm64")
-      folder <- dir(fp, pattern="aarch64-linux", full.names=TRUE)	
+      folder <- dir(fp, pattern="aarch64-linux", full.names=TRUE)
+
+    # Are we in roxygenize mode?
+    if(length(folder) == 0)
+    {
+      inst <- dir(file.path(libname, pkgname), pattern="inst", full.names=FALSE)
+      if("inst" %in% inst)
+        folder <- dir(file.path(libname, pkgname, "inst", "swipl", "lib", "swipl", "lib"),
+                      pattern=R.version$arch, full.names=TRUE)
+
+      if(length(folder) == 0)
+        stop("rswipl: could not load libswipl.dll/so/dylib")
+    }
 
     # Preload libswipl.dll
     if(R.version$os == "linux-gnu")
@@ -69,42 +81,45 @@
 
 .onAttach <- function(libname, pkgname)
 {
-  if(.Platform$OS.type == "unix")
-    Sys.setenv(SWI_HOME_DIR=file.path(libname, pkgname, "swipl", "lib", "swipl"))
+  argv1 <- commandArgs()[1]
 
+  if(.Platform$OS.type == "unix")
+  {
+    Sys.setenv(SWI_HOME_DIR=file.path(libname, pkgname, "swipl", "lib", "swipl"))
+    if(!.init(argv1))
+      stop("rswipl: initialization of Prolog failed.")  
+  }
+
+  # This is a bit of a mystery.
+  #
+  # Initialization of the SWI-Prolog works fine under linux, under Windows using
+  # RStudio.exe, under Windows using RTerm.exe, but fails under RGui.exe (aka.
+  # "blue R"). Even stranger, it works in the second attempt. 
+  #
+  # For this reason, I invoke rolog_init twice here if needed. Any hint to a
+  # cleaner solution is appreciated.
   if(.Platform$OS.type == "windows")
+  {
     Sys.setenv(SWI_HOME_DIR=file.path(libname, pkgname, "swipl"))
+
+    if(!.init(argv1) && !.init(argv1))
+      stop("rswipl: initialization of Prolog failed.")  
+  }
   
+  # SWI startup message
+  query(call("message_to_string", quote(welcome), expression(W)))
+  W <- submit()
+  clear()
+  packageStartupMessage(W$W)
   invisible()
 }
 
 .onDetach <- function(libpath)
 {
+  clear()
+  if(!.done())
+    warning("rswipl: Prolog not initialized.")
+
   Sys.unsetenv("SWI_HOME_DIR")
 }
 
-#' Start SWI-Prolog
-#'
-#' @param argv1
-#' file name of the R executable
-#'
-#' @return
-#' `TRUE` on success
-#' 
-#' @details 
-#' SWI-prolog is automatically initialized when this library is loaded, so
-#' the function below is normally not directly invoked.
-#'
-rswipl_init <- function(argv1=commandArgs()[1])
-{
-  .init(argv1)
-}
-
-#' Clean up when detaching the library
-#' 
-#' @return
-#' `TRUE` on success
-rswipl_done <- function()
-{
-  .done()
-}
