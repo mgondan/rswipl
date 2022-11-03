@@ -12,32 +12,13 @@
   # Load libswipl.dylib under Linux and macOS
   if(.Platform$OS.type == "unix")
   {
-    # Find folder like x86_64-linux
-    fp <- file.path(libname, pkgname, "swipl", "lib", "swipl", "lib")
-    arch <- R.version$arch
-    if(arch == 'aarch64')
-      arch <- 'arm64'
-    folder <- dir(fp, pattern=arch, full.names=TRUE)
-    if(!length(folder) & arch == "arm64")
-      folder <- dir(fp, pattern="aarch64-linux", full.names=TRUE)
+    fp <- file.path(libname, pkgname, "swipl", "lib")
 
-    # Are we in roxygenize mode?
-    if(length(folder) == 0)
-    {
-      inst <- dir(file.path(libname, pkgname), pattern="inst", full.names=FALSE)
-      if("inst" %in% inst)
-        folder <- dir(file.path(libname, pkgname, "inst", "swipl", "lib", "swipl", "lib"),
-                      pattern=R.version$arch, full.names=TRUE)
-
-      if(length(folder) == 0)
-        stop("rswipl: could not load libswipl.dll/so/dylib")
-    }
-
-    # Preload libswipl.dll
+    # Preload libswipl.so
     if(R.version$os == "linux-gnu")
-      dyn.load(file.path(folder, paste("libswipl", .Platform$dynlib.ext, sep="")))
+      dyn.load(file.path(fp, paste("libswipl", .Platform$dynlib.ext, sep="")))
     else
-      dyn.load(file.path(folder, "libswipl.dylib")) # macOS
+      dyn.load(file.path(fp, "libswipl.dylib")) # macOS
   }
 	
   if(.Platform$OS.type == "windows")
@@ -58,18 +39,11 @@
 
   if(.Platform$OS.type == "unix")
   {
-    fp <- file.path(libpath, "swipl", "lib", "swipl", "lib")
-    arch <- R.version$arch
-    if(arch == 'aarch64')
-      arch <- 'arm64'
-    folder <- dir(fp, pattern=arch, full.names=TRUE)
-    if(!length(folder) & arch == "arm64")
-      folder <- dir(fp, pattern="aarch64-linux", full.names=TRUE)	
-
+    fp <- file.path(libpath, "swipl", "lib")
     if(R.version$os == "linux-gnu")
-      dyn.unload(file.path(folder, paste("libswipl", .Platform$dynlib.ext, sep="")))
+      dyn.unload(file.path(fp, paste("libswipl", .Platform$dynlib.ext, sep="")))
     else
-      dyn.unload(file.path(folder, "libswipl.dylib")) # macOS
+      dyn.unload(file.path(fp, "libswipl.dylib")) # macOS
   }
 	
   if(.Platform$OS.type == "windows")
@@ -100,7 +74,7 @@
   # cleaner solution is appreciated.
   if(.Platform$OS.type == "windows")
   {
-    Sys.setenv(SWI_HOME_DIR=file.path(libname, pkgname, "swipl"))
+    Sys.setenv(SWI_HOME_DIR=file.path(libname, pkgname, "swipl", "lib", "swipl"))
 
     if(!.init(argv1) && !.init(argv1))
       stop("rswipl: initialization of Prolog failed.")  
