@@ -12,15 +12,21 @@
   # Load libswipl.dylib under Linux and macOS
   if(.Platform$OS.type == "unix")
   {
-    fp <- file.path(libname, pkgname, "swipl", "lib")
+    fp <- file.path(libname, pkgname, "swipl", "lib", "swipl", "lib")
+    arch <- R.version$arch
+    if(arch == 'aarch64')
+      arch <- 'arm64'
+    folder <- dir(fp, pattern=arch, full.names=TRUE)
+    if(!length(folder) & arch == "arm64")
+      folder <- dir(fp, pattern="aarch64-linux", full.names=TRUE)
 
-    # Preload libswipl.so
+    # Preload libswipl.dll
     if(R.version$os == "linux-gnu")
-      dyn.load(file.path(fp, paste("libswipl", .Platform$dynlib.ext, sep="")))
+      dyn.load(file.path(folder, paste("libswipl", .Platform$dynlib.ext, sep="")))
     else
-      dyn.load(file.path(fp, "libswipl.dylib")) # macOS
+      dyn.load(file.path(folder, "libswipl.dylib")) # macOS
   }
-	
+
   if(.Platform$OS.type == "windows")
   {
     folder <- file.path(libname, pkgname, "swipl", "bin")
@@ -39,11 +45,18 @@
 
   if(.Platform$OS.type == "unix")
   {
-    fp <- file.path(libpath, "swipl", "lib")
+    fp <- file.path(libpath, "swipl", "lib", "swipl", "lib")
+    arch <- R.version$arch
+    if(arch == 'aarch64')
+      arch <- 'arm64'
+    folder <- dir(fp, pattern=arch, full.names=TRUE)
+    if(!length(folder) & arch == "arm64")
+      folder <- dir(fp, pattern="aarch64-linux", full.names=TRUE)	
+
     if(R.version$os == "linux-gnu")
-      dyn.unload(file.path(fp, paste("libswipl", .Platform$dynlib.ext, sep="")))
+      dyn.unload(file.path(folder, paste("libswipl", .Platform$dynlib.ext, sep="")))
     else
-      dyn.unload(file.path(fp, "libswipl.dylib")) # macOS
+      dyn.unload(file.path(folder, "libswipl.dylib")) # macOS
   }
 	
   if(.Platform$OS.type == "windows")

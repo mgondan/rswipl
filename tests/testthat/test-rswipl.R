@@ -190,3 +190,12 @@ test_that("function bodies are properly translated",
   expect_identical(sapply(FUN=as.character, bf), sapply(FUN=as.character, bq))
 })
 
+test_that("check_installation works",
+{
+  query(call("check_installation"))
+  q <- submit()
+  clear()
+
+  # A few warnings will be displayed, that is fine.
+  expect_equal(q, list())
+})
