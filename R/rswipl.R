@@ -87,7 +87,7 @@
   # cleaner solution is appreciated.
   if(.Platform$OS.type == "windows")
   {
-    Sys.setenv(SWI_HOME_DIR=file.path(libname, pkgname, "swipl", "lib", "swipl"))
+    Sys.setenv(SWI_HOME_DIR=file.path(libname, pkgname, "swipl"))
 
     if(!.init(argv1) && !.init(argv1))
       stop("rswipl: initialization of Prolog failed.")  
