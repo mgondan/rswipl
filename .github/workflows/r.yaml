@@ -1,3 +1,51 @@
+jobs:
+  R-CMD-check:
+    runs-on: windows-latest
+
+    name: Windows, R: ${{ matrix.config.r }}, Rtools: ${{ matrix.config.rtools }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          # the default is rtools40 here
+          - { r: 'release'                       }
+          # manually select rtools42
+          - { r: 'release', rtools-version: "42" }
+          # defaults to rtools43
+          - { r: 'devel'                         }
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./setup-pandoc
+
+      - uses: ./setup-r
+        with:
+          r-version: ${{ matrix.config.r }}
+          rtools-version: ${{ matrix.config.rtools-version }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+
+      - uses: ./setup-r-dependencies
+        with:
+          pak-version: ${{ github.event.inputs.pak-version || 'stable' }}
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: ./check-r-package
+        with:
+          upload-snapshots: true
+          
+          
+          
+
+
+
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
@@ -19,8 +67,6 @@ jobs:
       matrix:
         config:
           - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
 
     env:
@@ -46,5 +92,44 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+  
+  R-CMD-check:
+    runs-on: windows-latest
+
+    name: Windows, R: ${{ matrix.config.r }}, Rtools: ${{ matrix.config.rtools }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { r: 'release', rtools-version: "42" }
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - uses: ./setup-pandoc
+
+      - uses: ./setup-r
+        with:
+          r-version: ${{ matrix.config.r }}
+          rtools-version: ${{ matrix.config.rtools-version }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+
+      - uses: ./setup-r-dependencies
+        with:
+          pak-version: ${{ github.event.inputs.pak-version || 'stable' }}
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: ./check-r-package
         with:
           upload-snapshots: true
