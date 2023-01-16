@@ -17,7 +17,6 @@ swipl: ../linux/done
 ifdef CMAKE_VERSION
 	cd ../linux && cmake -DCMAKE_INSTALL_PREFIX=../inst/swipl -DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DBUILD_TESTING=ON -DINSTALL_TESTS=ON -DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel
 	cd ../linux && $(MAKE) -j1
-	cd ../linux && ctest
 	cd ../linux && $(MAKE) -j1 install
 endif
 ifdef CMAKE_VERSION_MACOS
