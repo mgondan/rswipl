@@ -12,7 +12,6 @@ swipl: ../linux/done
 
 ../linux/done:
 	mkdir -p ../linux
-	echo $(OS)
 ifeq ("$(OS)","linux-gnu")
 	cd ../linux && cmake -DCMAKE_INSTALL_PREFIX=../inst/swipl -DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_SHARED_LIB=OFF -DSWIPL_STATIC_LIB=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel
 	cd ../linux && $(MAKE) -j1
