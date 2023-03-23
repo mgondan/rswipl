@@ -8,7 +8,6 @@
 ^src/swipl-devel/packages/xpce/
 ^src/swipl-devel/packages/semweb/
 ^src/swipl-devel/packages/bdb/
-^src/swipl-devel/packages/yaml/
 ^src/swipl-devel/packages/utf8proc/
 ^src/swipl-devel/packages/sweep
 ^src/swipl-devel/packages/cppproxy/
