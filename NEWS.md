@@ -1,4 +1,6 @@
-# rswipl 9.1.11.1
+# rswipl 9.1.12
+
+see https://swi-prolog.discourse.group/t/ann-swi-prolog-9-1-12/6754
 
 maintainance release, fixes a problem with clang15 on macOS
 
