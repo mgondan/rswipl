@@ -11,9 +11,7 @@ $(SHLIB): RcppExports.o rswipl.o
 
 rswipl.o: swipl
 
-swipl: ../linux/done
-
-../linux/done:
+swipl:
 	mkdir -p ../linux
 ifeq ("$(OS)","linux-gnu")
 	cd ../linux && cmake -DCMAKE_INSTALL_PREFIX=../inst/swipl -DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_BUILD_TYPE=Release -DSWIPL_PACKAGES_PYTHON=OFF -S ../src/swipl-devel
@@ -31,4 +29,3 @@ endif
 	rm ../inst/swipl/bin/swipl-ld
 	-rm ../inst/swipl/lib/swipl/bin/*/swipl
 	-rm ../inst/swipl/lib/swipl/bin/*/swipl-ld
-	touch ../linux/done
