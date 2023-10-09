@@ -1,6 +1,9 @@
+#include "Rcpp.h"
+
 #include <SWI-cpp2.h>
 #include <SWI-cpp2.cpp>
-#include "Rcpp.h"
+
+// #include "Rcpp.h"
 using namespace Rcpp ;
 
 // Translate prolog expression to R
