@@ -292,7 +292,8 @@ RObject pl2r_function(PlTerm pl, CharacterVector& names, PlTerm& vars)
     }
 
     // the argument is the name
-    head.push_back(Named(arg.as_string(PlEncoding::UTF8)) = pl2r_symbol(PlTerm_atom(""))) ;
+    // head.push_back(Named(arg.as_string(PlEncoding::UTF8)) = pl2r_symbol(PlTerm_atom(""))) ;
+    head.push_back(Named(arg.as_string(PlEncoding::UTF8)) = Function("substitute")()) ;
   }
 
   RObject body = pl2r_compound(plbody, names, vars) ;
@@ -329,7 +330,7 @@ LogicalVector pl2r_boolvec(PlTerm pl)
       }
     }
     
-    warning("r2pl_logical: invalid item %s, returning NA", t.as_string(PlEncoding::Locale).c_str()) ;
+    warning("pl2r_logical: invalid item %s, returning NA", t.as_string(PlEncoding::Locale).c_str()) ;
     r(i) = NA_LOGICAL ;
   }
 
@@ -348,7 +349,7 @@ LogicalMatrix pl2r_boolmat(PlTerm pl)
       else
       {
         if(pl[i+1].arity() != ncol)
-          stop("cannot convert PlTerm to Matrix, inconsistent rows") ;
+          stop("pl2r_boolmat: cannot convert PlTerm to Matrix, inconsistent rows") ;
       }
   }
 
@@ -427,7 +428,7 @@ RObject pl2r_compound(PlTerm pl, CharacterVector& names, PlTerm& vars)
     return pl2r_boolvec(pl) ;
 
   // Convert :- to function
-  if(pl.name().as_string() == ":-")
+  if(!strcmp(pl.name().as_string(PlEncoding::UTF8).c_str(), ":-"))
     return pl2r_function(pl, names, vars) ;
 
   // Other compounds
@@ -536,7 +537,10 @@ RObject pl2r(PlTerm pl, CharacterVector& names, PlTerm& vars)
     return pl2r_list(pl, names, vars) ;
   
   if(pl.is_compound())
+  {
+    warning("pl2r: is_compound") ;
     return pl2r_compound(pl, names, vars) ;
+  }
   
   if(pl.is_variable())
     return pl2r_variable(pl, names, vars) ;
@@ -556,8 +560,9 @@ PlTerm r2pl_string(CharacterVector r) ;
 PlTerm r2pl_null()
 {
   PlTerm_var pl ;
-  PlCheckFail(PlTerm_tail(pl).close()) ;
-  return pl ;
+  PlTerm_tail tail(pl) ;
+  PlCheckFail(tail.close()) ;
+  return tail ;
 }
 
 // Prolog representation of R's NA.
