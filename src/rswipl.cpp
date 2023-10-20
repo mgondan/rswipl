@@ -537,10 +537,7 @@ RObject pl2r(PlTerm pl, CharacterVector& names, PlTerm& vars)
     return pl2r_list(pl, names, vars) ;
   
   if(pl.is_compound())
-  {
-    warning("pl2r: is_compound") ;
     return pl2r_compound(pl, names, vars) ;
-  }
   
   if(pl.is_variable())
     return pl2r_variable(pl, names, vars) ;
