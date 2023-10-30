@@ -1,4 +1,4 @@
-# rswipl 9.1.18
+# rswipl 9.1.17.1
 
 maintainance release, fixes UBSAN errors
 

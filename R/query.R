@@ -1,6 +1,6 @@
 #' Create a query
 #'
-#' @param query
+#' @param q
 #' an R call. The R call consists of symbols, integers and real numbers, 
 #' character strings, boolean values, expressions, lists, and other calls.
 #' Vectors of booleans, integers, floating point numbers, and strings with
@@ -57,9 +57,9 @@
 #' clear()
 #' 
 query <- function(
-    query=call("member", expression(X), list(quote(a), "b", 3L, 4, TRUE, expression(Y))))
+    q=call("member", expression(X), list(quote(a), "b", 3L, 4, TRUE, expression(Y))))
 {
-    .query(query)
+    .query(q)
 }
 
 #' Clear current query
