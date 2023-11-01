@@ -1,3 +1,7 @@
+# rswipl 9.1.18
+
+see https://swi-prolog.discourse.group/t/ann-swi-prolog-9-1-18/6936
+
 # rswipl 9.1.17.1
 
 maintainance release, fixes UBSAN errors
