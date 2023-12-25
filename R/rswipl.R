@@ -36,14 +36,18 @@
       lib <- dir(file.path(home, "lib"), pattern="arm64", full.names=TRUE)
 
     if(R.Version()$os == "linux-gnu")
-      libswipl <- dir(lib, pattern="libswipl.so$", full.names=TRUE)
-    else
-      libswipl <- dir(lib, pattern="libswipl.dylib$", full.names=TRUE)
-
-    if(length(libswipl) == 1)
     {
-      dyn.load(libswipl, local=FALSE)
-      rswipl.ok <- TRUE
+      libswipl = NULL
+      rswipl.ok = TRUE
+    }
+    else
+    {
+      libswipl <- dir(lib, pattern="libswipl.dylib$", full.names=TRUE)
+      if(length(libswipl) == 1)
+      {
+        dyn.load(libswipl, local=FALSE)
+        rswipl.ok <- TRUE
+      }
     }
   }
 
@@ -73,21 +77,6 @@
 
   if(.Platform$OS.type == "unix")
     library.dynam(chname="rswipl", package=pkgname, lib.loc=libname, local=FALSE)
-
-  invisible()
-}
-
-.onUnload <- function(libpath)
-{
-  # See .onLoad for details
-  library.dynam.unload("rswipl", libpath=libpath)
-
-  if(options()$rswipl.ok & .Platform$OS.type == "unix")
-  {
-    lib <- options()$rswipl.lib
-    if(length(lib))
-      dyn.unload(lib)
-  }
 
   invisible()
 }
