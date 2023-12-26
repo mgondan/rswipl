@@ -25,7 +25,7 @@
     if(length(libswipl))
       rswipl.ok <- TRUE
   }
-
+  
   if(.Platform$OS.type == "unix")
   {
     pl0 <- file.path(libname, pkgname)
@@ -35,15 +35,19 @@
     if(length(lib) == 0 & arch == "aarch64")
       lib <- dir(file.path(home, "lib"), pattern="arm64", full.names=TRUE)
 
-    libswipl <- dir(lib, pattern=sprintf("libswipl%s$", .Platform$dynlib.ext),
-      full.names=TRUE)
+    if(R.Version()$os == "linux-gnu")
+      libswipl <- dir(lib, pattern="libswipl.so$", full.names=TRUE)
+    else
+      libswipl <- dir(lib, pattern="libswipl.dylib$", full.names=TRUE)
 
     if(length(libswipl) == 1)
+    {
       dyn.load(libswipl, local=FALSE)
-    rswipl.ok <- TRUE
+      rswipl.ok <- TRUE
+    }
   }
-
-  if(!rswipl.ok)
+  
+  if(!rswpl.ok)
     msg <- "Unable to locate the SWI-Prolog runtime."
 
   op.rswipl <- list(
