@@ -46,7 +46,7 @@
     rswipl.ok <- TRUE
   }
   
-  if(!rswpl.ok)
+  if(!rswipl.ok)
     msg <- "Unable to locate the SWI-Prolog runtime."
 
   op.rswipl <- list(
