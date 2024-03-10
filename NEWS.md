@@ -1,3 +1,9 @@
+# rswipl 9.3.2
+
+see https://swi-prolog.discourse.group/t/ann-swi-prolog-9-2-2-9-3-2/7270
+
+adds unit tests during installation
+
 # rswipl 9.1.21
 
 see https://swi-prolog.discourse.group/t/ann-swi-prolog-9-1-21/7075
