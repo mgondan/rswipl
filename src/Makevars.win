@@ -19,7 +19,8 @@ swipl:
 	# dos2unix all Makefiles
 	find ../mingw64 -name Makefile -exec sed -i 's/\r//' \{\} \;
 	make -C ../mingw64 install
-	cd ../mingw64 && ctest
+	echo -e "check:\n\tctest\n" > ../mingw64/Makefile.check
+	$(MAKE) -C ../mingw64 -f Makefile.check check
 	rm ../inst/swipl/bin/swipl.exe
 	rm ../inst/swipl/bin/swipl-win.exe
 	rm ../inst/swipl/bin/swipl-ld.exe
