@@ -14,12 +14,11 @@ swipl:
 		-DUSE_GMP=OFF -DBUILD_TESTING=OFF\
 		-DMINGW_ROOT=$(R_TOOLS_SOFT)\
 		-DLibArchive_INCLUDE_DIRS="-I."\
-		-DLibArchive_LIBRARIES="-larchive -lnettle -lxml2 -liconv -lregex -lexpat -llzma -lzstd -llz4 -lbz2 -lz -lbcrypt -lws2_32"\
+		-DLibArchive_LIBRARIES="-larchive -lxml2 -liconv -lregex -lexpat -llzma -lzstd -llz4 -lbz2 -lz -lbcrypt -lws2_32"\
 		-DCMAKE_BUILD_TYPE=Release ../src/swipl-devel
+	cd ../mingw64 && ctest
 	# dos2unix all Makefiles
 	find ../mingw64 -name Makefile -exec sed -i 's/\r//' \{\} \;
-	echo -e "check:\n\tctest\n" > ../mingw64/Makefile.check
-	make -C ../mingw64 -f Makefile.check
 	make -C ../mingw64 install
 	rm ../inst/swipl/bin/swipl.exe
 	rm ../inst/swipl/bin/swipl-win.exe
