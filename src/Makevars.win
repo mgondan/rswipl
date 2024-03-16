@@ -16,10 +16,10 @@ swipl:
 		-DLibArchive_INCLUDE_DIRS="-I."\
 		-DLibArchive_LIBRARIES="-larchive -lnettle -lxml2 -liconv -lregex -lexpat -llzma -lzstd -llz4 -lbz2 -lz -lbcrypt -lws2_32"\
 		-DCMAKE_BUILD_TYPE=Release ../src/swipl-devel
-	cd ../mingw64 && ctest
 	# dos2unix all Makefiles
 	find ../mingw64 -name Makefile -exec sed -i 's/\r//' \{\} \;
 	make -C ../mingw64 install
+	cd ../mingw64 && ctest
 	rm ../inst/swipl/bin/swipl.exe
 	rm ../inst/swipl/bin/swipl-win.exe
 	rm ../inst/swipl/bin/swipl-ld.exe
