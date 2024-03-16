@@ -1,3 +1,9 @@
+# rswipl 9.3.3
+
+see https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-3/7311
+
+includes fix for RTools 4.4
+
 # rswipl 9.3.2
 
 see https://swi-prolog.discourse.group/t/ann-swi-prolog-9-2-2-9-3-2/7270
