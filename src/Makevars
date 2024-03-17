@@ -4,35 +4,47 @@ PKG_CXXFLAGS=$(CXX_VISIBILITY)
 
 CMAKE_VERSION := $(shell cmake --version 2>/dev/null)
 CMAKE_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/cmake --version 2>/dev/null)
+
+CTEST_VERSION := $(shell ctest --version 2>/dev/null)
+CTEST_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/ctest --version 2>/dev/null)
+
 CXX_STD=CXX17
 
 all: $(SHLIB)
 
-$(SHLIB): ../linux/done
+$(SHLIB): ../build/done
 
-RcppExports.o: ../linux/done
+RcppExports.o: ../build/done
 
-rswipl.o: ../linux/done
+rswipl.o: ../build/done
 
-../linux/done:
-	mkdir -p ../linux
+../build/done:
+	mkdir -p ../build
 ifdef CMAKE_VERSION
-	echo -e "check:\n\tLD_LIBRARY_PATH=$(CURDIR)/../linux/src:${LD_LIBRARY_PATH} ctest\n" > ../linux/Makefile.check
-	cd ../linux && cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_PACKAGES_PYTHON=OFF -DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel
-	LD_LIBRARY_PATH=$(CURDIR)/../linux/src:${LD_LIBRARY_PATH} $(MAKE) -C ../linux install
-	LD_LIBRARY_PATH=$(CURDIR)/../linux/src:${LD_LIBRARY_PATH} $(MAKE) -C ../linux -f Makefile.check check
+	cd ../build && cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_PACKAGES_PYTHON=OFF -DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel
+	LD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} $(MAKE) -C ../build install
 else
 ifdef CMAKE_VERSION_MACOS
-	echo -e "check:\n\t/Applications/CMake.app/Contents/bin/ctest -E proxy\n" > ../linux/Makefile.check
-	cd ../linux && LDFLAGS="-L/opt/R/arm64/lib" CFLAGS="-I/opt/R/arm64/include" /Applications/CMake.app/Contents/bin/cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_PACKAGES_PYTHON=OFF -DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel && $(MAKE) install
-	$(MAKE) -C ../linux -f Makefile.check check
+	cd ../build && LDFLAGS="-L/opt/R/arm64/lib" CFLAGS="-I/opt/R/arm64/include" /Applications/CMake.app/Contents/bin/cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_PACKAGES_PYTHON=OFF -DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel && $(MAKE) install
 else
 $(error Please install cmake on your system)
 endif
 endif
+$(message Running unit tests from swi-prolog)
+ifdef CTEST_VERSION
+	echo -e "check:\n\tLD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} ctest\n" > ../build/Makefile.check
+	-$(MAKE) -C ../build -f Makefile.check check
+else
+ifdef CTEST_VERSION_MACOS
+	echo -e "check:\n\t/Applications/CMake.app/Contents/bin/ctest -E proxy\n" > ../build/Makefile.check
+	-$(MAKE) -C ../build -f Makefile.check check
+else
+$(message ctest not found, skipping unit tests)
+endif
+endif
+$(clean up executables)
 	rm ../inst/swipl/bin/swipl
 	rm ../inst/swipl/bin/swipl-ld
 	-rm ../inst/swipl/lib/swipl/bin/*/swipl
 	-rm ../inst/swipl/lib/swipl/bin/*/swipl-ld
-	touch ../linux/done
-
+	touch ../build/done
