@@ -14,6 +14,7 @@
 ^src/swipl-devel/packages/tipc/
 ^src/swipl-devel/packages/PDT/
 ^src/swipl-devel/packages/RDF/
+^src/swipl-devel/packages/table/
 ^src/swipl-devel/packages/ltx2htm/
 ^src/swipl-devel/packages/swipl-win/
 ^src/swipl-devel/packages/readline/
