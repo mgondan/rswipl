@@ -23,3 +23,4 @@ swipl:
 	rm ../inst/swipl/bin/swipl.exe
 	rm ../inst/swipl/bin/swipl-win.exe
 	rm ../inst/swipl/bin/swipl-ld.exe
+	rm -rf ../mingw64
