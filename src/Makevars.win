@@ -7,14 +7,16 @@ swipl:
 	mkdir -p ../mingw64
 	mkdir -p ../inst/swipl/bin
 	rm -f ../inst/swipl/bin/*.dll
-	cd ../mingw64 && cmake -DCMAKE_INSTALL_PREFIX=../inst/swipl\
+	( cd ../mingw64 ;\
+		CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" cmake\
+		-DCMAKE_INSTALL_PREFIX=../inst/swipl\
 		-DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF\
 		-DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_PYTHON=OFF\
 		-DUSE_GMP=OFF\
 		-DMINGW_ROOT=$(R_TOOLS_SOFT)\
 		-DLibArchive_INCLUDE_DIRS="-I."\
 		-DLibArchive_LIBRARIES="-larchive -lnettle -lxml2 -liconv -lregex -lexpat -llzma -lzstd -llz4 -lbz2 -lz -lbcrypt -lws2_32"\
-		-DCMAKE_BUILD_TYPE=Release ../src/swipl-devel
+		-DCMAKE_BUILD_TYPE=Release ../src/swipl-devel )
 	# dos2unix all Makefiles
 	find ../mingw64 -name Makefile -exec sed -i 's/\r//' \{\} \;
 	make -C ../mingw64 install
