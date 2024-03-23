@@ -1,7 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^linux/
-^mingw64/
+^build/
 ^inst/swipl
 ^src/swipl-devel/packages/xpce/
 ^src/swipl-devel/packages/semweb/

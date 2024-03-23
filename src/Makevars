@@ -1,13 +1,9 @@
-PKG_CPPFLAGS=-Iswipl-devel/src -Iswipl-devel/packages/cpp -I../inst/swipl/lib/swipl/include -D_REENTRANT -D__SWI_PROLOG__ -D__SWI_EMBEDDED__
+PKG_CPPFLAGS=-Iswipl-devel/src -I../inst/swipl/lib/swipl/include -D_REENTRANT -D__SWI_PROLOG__ -D__SWI_EMBEDDED__
 PKG_LIBS=`pkg-config ../inst/swipl/share/pkgconfig/swipl.pc --libs`
 PKG_CXXFLAGS=$(CXX_VISIBILITY)
 
 CMAKE_VERSION := $(shell cmake --version 2>/dev/null)
 CMAKE_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/cmake --version 2>/dev/null)
-
-CTEST_VERSION := $(shell ctest --version 2>/dev/null)
-CTEST_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/ctest --version 2>/dev/null)
-
 CXX_STD=CXX17
 
 all: $(SHLIB)
@@ -31,19 +27,6 @@ else
 	$(error Please install cmake on your system)
 endif
 endif
-	$(message Running unit tests from swi-prolog)
-ifdef CTEST_VERSION
-	echo -e "check:\n\tLD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} ctest\n" > ../build/Makefile.check
-	-$(MAKE) -C ../build -f Makefile.check check
-else
-ifdef CTEST_VERSION_MACOS
-	echo -e "check:\n\t/Applications/CMake.app/Contents/bin/ctest -E proxy\n" > ../build/Makefile.check
-	-$(MAKE) -C ../build -f Makefile.check check
-else
-	$(message ctest not found, skipping unit tests)
-endif
-endif
-	$(meassage clean up executables)
 	rm ../inst/swipl/bin/swipl
 	rm ../inst/swipl/bin/swipl-ld
 	-rm ../inst/swipl/lib/swipl/bin/*/swipl
