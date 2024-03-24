@@ -1,6 +1,11 @@
 PKG_CPPFLAGS=-I../inst/swipl/include $(CXXPICFLAGS) -D_REENTRANT -D__SWI_PROLOG__ -O2 -gdwarf-2 -g3 -Wall -fno-strict-aliasing -D__WINDOWS__ -D_WINDOWS -D_WIN32_WINNT=0x0600 -DWIN64
 PKG_LIBS=-Wl,-Bsymbolic-functions -L../inst/swipl/bin -lswipl -lgmp -lz -lm -lpthread -lws2_32 -lpsapi -lwinmm -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
 
+PEDANTIC := $(shell echo $(CFLAGS) | grep pedantic -c)
+ifneq ($(PEDANTIC),0)
+  CMAKE_C_FLAGS_EXTRA = -DPEDANTIC
+endif
+
 all: swipl $(SHLIB)
 
 swipl:
@@ -8,10 +13,13 @@ swipl:
 	mkdir -p ../inst/swipl/bin
 	rm -f ../inst/swipl/bin/*.dll
 	( cd ../mingw64 ;\
-		CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" cmake\
+		CC="$(CC)" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" cmake\
 		-DCMAKE_INSTALL_PREFIX=../inst/swipl\
 		-DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF\
 		-DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_PYTHON=OFF\
+		-DBUILD_TESTING=OFF\
+		-DCMAKE_CXX_STANDARD=17\
+		-DCMAKE_C_FLAGS="$(FLAGS) $(CMAKE_C_FLAGS_EXTRA)"\
 		-DUSE_GMP=OFF\
 		-DMINGW_ROOT=$(R_TOOLS_SOFT)\
 		-DLibArchive_INCLUDE_DIRS="-I."\
