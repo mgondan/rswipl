@@ -8,14 +8,13 @@ swipl:
 	mkdir -p ../inst/swipl/bin
 	rm -f ../inst/swipl/bin/*.dll
 	( cd ../mingw64 ;\
-		CC="$(CC)" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" cmake\
+		CC="$(CC)" CFLAGS="$(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" cmake\
 		-DCMAKE_INSTALL_PREFIX=../inst/swipl\
 		-DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF\
 		-DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_PYTHON=OFF\
 		-DBUILD_TESTING=OFF\
 		-DCMAKE_CXX_STANDARD=17\
-		-DCMAKE_C_FLAGS="$(CFLAGS) $(subst pedantic,-DPEDANTIC,$(findstring pedantic,$(CFLAGS)))"\
-		-DUSE_GMP=OFF\
+		-DUSE_GMP=ON\
 		-DMINGW_ROOT=$(R_TOOLS_SOFT)\
 		-DLibArchive_INCLUDE_DIRS="-I."\
 		-DLibArchive_LIBRARIES="-larchive -lnettle -lxml2 -liconv -lregex -lexpat -llzma -lzstd -llz4 -lbz2 -lz -lbcrypt -lws2_32"\
