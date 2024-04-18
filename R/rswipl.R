@@ -18,7 +18,8 @@
   {
     pl0 <- file.path(libname, pkgname)
     home <- dir(pl0, pattern="swipl$", full.names=TRUE)
-    libswipl <- dir(file.path(home, "bin"),
+    lib = file.path(home, "bin")
+    libswipl <- dir(lib,
       pattern=paste("libswipl", .Platform$dynlib.ext, "$", sep=""),
       full.names=TRUE)
 
@@ -60,13 +61,8 @@
   if(!options()$rswipl.ok)
     return(FALSE)
 
-  if(.Platform$OS.type == "windows")
-    library.dynam("rswipl", package=pkgname, lib.loc=libname, 
-      DLLpath=file.path(home, "bin"))
-
-  if(.Platform$OS.type == "unix")
-    library.dynam(chname="rswipl", package=pkgname, lib.loc=libname, DLLpath=lib, now=FALSE)
-
+  library.dynam(chname="rswipl", package=pkgname, lib.loc=libname, DLLpath=lib,
+    local=FALSE)
   invisible()
 }
 
