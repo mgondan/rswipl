@@ -1,3 +1,7 @@
+# rswipl 9.3.4
+
+maintainance release, fixes problems reported for Alpine Linux
+
 # rswipl 9.3.3.1
 
 maintainance release, fixes problems reported for M1mac
