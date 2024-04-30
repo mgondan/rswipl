@@ -1,4 +1,6 @@
-# rswipl 9.3.4
+# rswipl 9.3.5
+
+see https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-5/7425
 
 maintainance release, fixes problems reported for Alpine Linux
 
