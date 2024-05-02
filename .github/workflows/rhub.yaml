@@ -49,7 +49,7 @@ jobs:
     container:
       image: ${{ matrix.config.container }}
     steps:
-      - uses: r-hub/actions/checkout@v4
+      - uses: r-hub/actions/checkout@v1
         with:
           submodules: 'recursive'
       - uses: r-hub/actions/platform-info@v1
