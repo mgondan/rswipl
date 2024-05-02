@@ -11,9 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/r-hub/containers/atlas:latest
-
+      
     steps:
+    - name: Install git on container
+      run: |
+        apt update
+        apt install -y git
+  
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
     - name: Install dependencies
       run: |
