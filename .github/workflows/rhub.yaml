@@ -14,9 +14,7 @@ jobs:
       
     steps:
     - name: Install git on container
-      run: |
-        apt-get update
-        apt-get install -y git
+      run: apt install -y git
   
     - uses: actions/checkout@v3
       with:
