@@ -119,6 +119,8 @@
 #' Invoke SWI-Prolog. This function is internally used to emulate swipl using
 #' the R program: R -e "rswipl:::swipl()" -q --no-echo --args -g goal
 #'
+#' @return
+#' nothing useful
 swipl <- function()
 {
   if(!.swipl(commandArgs()[1], commandArgs(TRUE)))
