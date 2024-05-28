@@ -220,3 +220,14 @@ test_that("check_installation works",
   # A few warnings will be displayed, that is fine.
   expect_equal(q, list())
 })
+
+# test_that("test_installation works",
+# {
+#   query(call("test_installation", 
+#     list(call(arguments(list("-e", "rswipl:::swipl()", "-q", "--no-echo", "--args"))))
+#   q <- submit()
+#   clear()
+#
+#   expect_equal(q, list())
+# })
+

@@ -4,6 +4,8 @@ PKG_CXXFLAGS=$(CXX_VISIBILITY)
 
 CMAKE_VERSION := $(shell cmake --version 2>/dev/null)
 CMAKE_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/cmake --version 2>/dev/null)
+CTEST_VERSION := $(shell ctest --version 2>/dev/null)
+CTEST_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/ctest --version 2>/dev/null)
 CXX_STD=CXX17
 
 all: $(SHLIB)
@@ -17,15 +19,24 @@ rswipl.o: ../build/done
 ../build/done:
 	mkdir -p ../build
 ifdef CMAKE_VERSION
-	(cd ../build ; CC="$(CC)" CXX="$(CXX)" CFLAGS="$(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))" LDFLAGS="$(LDFLAGS)" CXXFLAGS="$(subst -Werror=implicit-function-declaration,,$(CXXFLAGS))" cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DSWIPL_INSTALL_IN_LIB=ON -DINSTALL_DOCUMENTATION=OFF -DBUILD_TESTING=OFF -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_PACKAGES_PYTHON=OFF -DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel)
+	(cd ../build ; CC="$(CC)" CXX="$(CXX)" CFLAGS="$(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))" LDFLAGS="$(LDFLAGS)" CXXFLAGS="$(subst -Werror=implicit-function-declaration,,$(CXXFLAGS))" cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DSWIPL_INSTALL_IN_LIB=ON -DINSTALL_DOCUMENTATION=OFF -DBUILD_TESTING=ON -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_PACKAGES_PYTHON=OFF -DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel)
 	LD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} cmake --build ../build
+	(cd ../build ; LD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} ctest)
 	cmake --install ../build
 else
 ifdef CMAKE_VERSION_MACOS
-	(cd ../build ; CC="$(CC)" CXX="$(CXX)" CFLAGS="$(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))" CPPFLAGS="$(CPPFLAGS) -I/opt/R/arm64/include" LDFLAGS="-L/opt/R/arm64/lib $(LDFLAGS)" /Applications/CMake.app/Contents/bin/cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DSWIPL_INSTALL_IN_LIB=ON -DINSTALL_DOCUMENTATION=OFF -DBUILD_TESTING=OFF -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_PACKAGES_PYTHON=OFF -DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel)
-	$(MAKE) -C ../build install
+	(cd ../build ; CC="$(CC)" CXX="$(CXX)" CFLAGS="$(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))" CPPFLAGS="$(CPPFLAGS) -I/opt/R/arm64/include" LDFLAGS="-L/opt/R/arm64/lib $(LDFLAGS)" /Applications/CMake.app/Contents/bin/cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DSWIPL_INSTALL_IN_LIB=ON -DINSTALL_DOCUMENTATION=OFF -DBUILD_TESTING=ON -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_PACKAGES_PYTHON=OFF -DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel)
+	/Applications/CMake.app/Contents/bin/cmake --build ../build
 else
 	$(error Please install cmake on your system)
+endif
+endif
+ifdef CTEST_VERSION
+else
+ifdef CTEST_VERSION_MACOS
+	/Applications/CMake.app/Contents/bin/ctest
+else
+	$(message Please install ctest on your system)
 endif
 endif
 	rm ../inst/swipl/bin/swipl

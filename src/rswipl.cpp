@@ -1047,8 +1047,9 @@ RObject submit_()
 // The SWI system should not be initialized twice; therefore, we keep track of
 // its status.
 bool pl_initialized = false ;
+const char** pl_argv = NULL ;
 
-// Initialize SWI-prolog. This needs a list of the command-line arguments of 
+// Initialize SWI-Prolog. This needs a list of the command-line arguments of 
 // the calling program, the most important being the name of the main 
 // executable, argv[0]. I added "-q" to suppress SWI prolog's welcome message
 // which is shown in .onAttach anyway.
@@ -1056,19 +1057,41 @@ bool pl_initialized = false ;
 LogicalVector init_(String argv0)
 {
   if(pl_initialized)
-    warning("Please do not initialize SWI-prolog twice in the same session.") ;
+    warning("Please do not initialize SWI-Prolog twice in the same session.") ;
   
   // Prolog documentation requires that argv is accessible during the entire 
   // session. I assume that this pointer is valid during the whole R session,
   // and that I can safely cast it to const.
-  const int argc = 2 ;
-  const char* argv[argc] ;
-  argv[0] = argv0.get_cstring() ;
-  argv[1] = "-q" ;
-  if(!PL_initialise(argc, (char**) argv))
+  const int argc = 4 ;
+  pl_argv = new const char*[argc] ;
+  pl_argv[0] = argv0.get_cstring() ;
+  pl_argv[1] = "-q" ;
+  pl_argv[2] = "-Dembedded" ;
+  pl_argv[3] = "--sigalert=0" ;
+  if(!PL_initialise(argc, (char**) pl_argv))
     stop("rswipl_init: initialization failed.") ;
 
   pl_initialized = true ;  
+  return true ;
+}
+
+// Run a swipl session from R. This is needed for unit tests. Instead of
+// swipl -g goal, invoke R -e 'library(rswipl)' --no-echo -q --args -g goal
+// [[Rcpp::export(.swipl)
+LogicalVector swipl_(String argv0, CharacterVector& arglist)
+{
+  if(pl_initialized)
+    warning("Please do not initialize SWI-Prolog twice in the same session.") ;
+
+  R_xlen_t argc = 1 + arglist.size() ;
+  pl_argv = new const char*[argc] ;
+  pl_argv[0] = argv0.get_cstring() ;
+  for(R_xlen_t i=1 ; i<argc ; i++)
+    pl_argv[i] = arglist(i-1) ;
+  if(!PL_initialise(argc, (char**) pl_argv))
+    stop("rswipl_init_swipl: initialization failed.") ;
+
+  pl_initialized = true ;
   return true ;
 }
 
@@ -1086,5 +1109,6 @@ LogicalVector done_()
 
   PL_cleanup(0) ;
   pl_initialized = false ;
+  delete [] pl_argv ;
   return true ;
 }
