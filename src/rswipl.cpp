@@ -1077,7 +1077,7 @@ LogicalVector init_(String argv0)
 
 // Run a swipl session from R. This is needed for unit tests. Instead of
 // swipl -g goal, invoke R -e 'library(rswipl)' --no-echo -q --args -g goal
-// [[Rcpp::export(.swipl)
+// [[Rcpp::export(.swipl)]]
 LogicalVector swipl_(String argv0, CharacterVector& arglist)
 {
   if(pl_initialized)

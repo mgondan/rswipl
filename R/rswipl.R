@@ -116,7 +116,9 @@
     Sys.setenv(SWI_HOME_DIR=home)
 }
 
-#' Invoke SWI-Prolog. This function is internally used to emulate swipl using
+#' Invoke SWI-Prolog
+#' 
+#' This function is internally used to emulate swipl using
 #' the R program: R -e "rswipl:::swipl()" -q --no-echo --args -g goal
 #'
 #' @return
