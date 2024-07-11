@@ -1,8 +1,8 @@
 Package: rswipl
 Type: Package
 Title: Embed 'SWI'-'Prolog'
-Version: 9.3.7.1
-Date: 2024-07-03
+Version: 9.3.8
+Date: 2024-07-11
 Authors@R: c(person("Matthias", "Gondan", role = c("aut", "com", "cre"), email = "Matthias.Gondan-Rochon@uibk.ac.at", comment = "Universität Innsbruck"),
   person("Jan", "Wielemaker", role = c("ctb", "cph"), email = "jan@swi-prolog.org", comment = "JW is the lead developer of SWI-Prolog. See https://www.swi-prolog.org/Contributors.html for a list of contributors."),
   person("European Commission", role="fnd", comment="Erasmus+ Programme, 2019-1-EE01-KA203-051708"))
@@ -29,6 +29,3 @@ SystemRequirements:
     libz2,
     libz,
     libbcrypt
-Suggests: 
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
