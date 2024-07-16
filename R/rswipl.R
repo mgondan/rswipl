@@ -83,13 +83,13 @@
 
 .onAttach <- function(libname, pkgname)
 {
-  if(!options()$rswipl.ok)
+   if(!options()$rswipl.ok)
     return(FALSE)
 
-  if(commandArgs()[1] == "-e" & commandArgs()[2] == "rswipl:::swipl()")
-    return(swipl())
-
   Sys.setenv(SWI_HOME_DIR=options()$rswipl.home)
+  if(commandArgs()[1] == "-e" & commandArgs()[2] == "rswipl::swipl()")
+    return(swipl())
+  
   if(!.init(commandArgs()[1]))
   {
     warning("rswipl: initialization of swipl failed.")  
@@ -118,13 +118,17 @@
 
 #' Invoke SWI-Prolog
 #' 
-#' This function is internally used to emulate swipl using
-#' the R program: R -e "rswipl:::swipl()" -q --no-echo --args -g goal
+#' This function is internally used to emulate swipl -g goal using
+#' the R program: R -e "rswipl::swipl()" -q --no-echo --args -g goal
 #'
 #' @return
 #' nothing useful
 swipl <- function()
 {
+  if(!options()$rswipl.ok)
+    return(FALSE)
+
+  Sys.setenv(SWI_HOME_DIR=options()$rswipl.home)
   if(!.swipl(commandArgs()[1], commandArgs(TRUE)))
   {
     warning("rswipl: running swipl failed.")

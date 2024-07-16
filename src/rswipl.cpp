@@ -1068,12 +1068,11 @@ LogicalVector init_(String argv0)
   // Prolog documentation requires that argv is accessible during the entire 
   // session. I assume that this pointer is valid during the whole R session,
   // and that I can safely cast it to const.
-  const int argc = 2 ; // 4 ; // forthcoming
+  const int argc = 3 ;
   pl_argv = new const char*[argc] ;
   pl_argv[0] = argv0.get_cstring() ;
   pl_argv[1] = "-q" ;
-//  pl_argv[2] = "-D embedded=true" ;
-//  pl_argv[3] = "--sigalert=0" ;
+  pl_argv[2] = "--sigalert=0" ;
   if(!PL_initialise(argc, (char**) pl_argv))
     stop("rswipl_init: initialization failed.") ;
 
@@ -1082,7 +1081,7 @@ LogicalVector init_(String argv0)
 }
 
 // Run a swipl session from R. This is needed for unit tests. Instead of
-// swipl -g goal, invoke R -e 'library(rswipl)' --no-echo -q --args -g goal
+// swipl -g goal, invoke R -e 'rswipl::swipl()' --no-echo -q --args -g goal
 // [[Rcpp::export(.swipl)]]
 LogicalVector swipl_(String argv0, CharacterVector& arglist)
 {
@@ -1093,7 +1092,7 @@ LogicalVector swipl_(String argv0, CharacterVector& arglist)
   pl_argv = new const char*[argc] ;
   pl_argv[0] = argv0.get_cstring() ;
   for(R_xlen_t i=1 ; i<argc ; i++)
-    pl_argv[i] = arglist(i-1) ;
+    pl_argv[i] = arglist(i - 1) ;
   if(!PL_initialise(argc, (char**) pl_argv))
     stop("rswipl_init_swipl: initialization failed.") ;
 

@@ -1,3 +1,13 @@
+test_that("test_installation succeeds",
+{
+  query(call("test_installation",
+    list(call("arguments", list(as.name('-e'), as.name('"rswipl::swipl()"'), 
+				as.name('-q'), as.name('--no-echo'), as.name('--args'))))))
+  q <- submit()
+  clear()
+  expect_equal(q, list())
+})
+
 test_that("queries can be formed", 
 {
   q <- query(call("member", expression(X), list(quote(a), "b", 3L, 4, TRUE, expression(Y), NA, NaN, Inf, NULL)))
