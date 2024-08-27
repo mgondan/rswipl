@@ -121,6 +121,9 @@
 #' This function is internally used to emulate swipl -g goal using
 #' the R program: R -e "rswipl::swipl()" -q --no-echo --args -g goal
 #'
+#' @param sigalert
+#' Use a different alert signal than SIGUSR2.
+#'
 #' @return
 #' nothing useful
 swipl <- function(sigalert=NA)
