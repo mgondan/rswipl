@@ -123,13 +123,17 @@
 #'
 #' @return
 #' nothing useful
-swipl <- function()
+swipl <- function(sigalert=NA)
 {
   if(!options()$rswipl.ok)
     return(FALSE)
 
+  argv <- commandArgs(TRUE)
+  if(!is.na(sigalert))
+    argv <- c("-q", sprintf("--sigalert=%i", sigalert), argv)
+
   Sys.setenv(SWI_HOME_DIR=options()$rswipl.home)
-  if(!.swipl(commandArgs()[1], commandArgs(TRUE)))
+  if(!.swipl(commandArgs()[1], argv))
   {
     warning("rswipl: running swipl failed.")
     return(FALSE)
