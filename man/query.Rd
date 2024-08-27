@@ -12,7 +12,7 @@ query(
 \item{q}{an R call. The R call consists of symbols, integers and real numbers,
 character strings, boolean values, expressions, lists, and other calls.
 Vectors of booleans, integers, floating point numbers, and strings with
-length \emph{N} > 1 are translated to prolog compounds !!/N, \%\%/N, ##/N and $$/N,
+length \emph{N} > 1 are translated to prolog compounds !/N, \%/N, #/N and $$/N,
 respectively.}
 }
 \value{
