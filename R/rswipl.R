@@ -122,7 +122,7 @@
 #' the R program: R -e "rswipl::swipl()" -q --no-echo --args -g goal
 #'
 #' @param sigalert
-#' Use a different alert signal than SIGUSR2.
+#' Use a different alert signal than SIGUSR2 (ignored on Windows)
 #'
 #' @return
 #' nothing useful
@@ -132,7 +132,7 @@ swipl <- function(sigalert=NA)
     return(FALSE)
 
   argv <- commandArgs(TRUE)
-  if(!is.na(sigalert))
+  if(!is.na(sigalert) & .Platform$OS.type == "unix")
     argv <- c("-q", sprintf("--sigalert=%i", sigalert), argv)
 
   Sys.setenv(SWI_HOME_DIR=options()$rswipl.home)

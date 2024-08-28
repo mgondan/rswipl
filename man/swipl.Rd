@@ -7,7 +7,7 @@
 swipl(sigalert = NA)
 }
 \arguments{
-\item{sigalert}{Use a different alert signal than SIGUSR2.}
+\item{sigalert}{Use a different alert signal than SIGUSR2 (ignored on Windows)}
 }
 \value{
 nothing useful
