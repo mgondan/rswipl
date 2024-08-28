@@ -90,7 +90,11 @@
   if(commandArgs()[1] == "-e" & commandArgs()[2] == "rswipl::swipl()")
     return(swipl())
   
-  if(!.init(commandArgs()[1]))
+  argv <- "-q" # Suppress welcome message
+  if(.Platform$OS.type == "unix")
+    argv <- c(argv, "--sigalert=0")
+
+  if(!.init(commandArgs()[1], argv))
   {
     warning("rswipl: initialization of swipl failed.")  
     return(FALSE)
@@ -138,7 +142,7 @@ swipl <- function(sigalert=NA)
   warning(argv)
 
   Sys.setenv(SWI_HOME_DIR=options()$rswipl.home)
-  if(!.swipl(commandArgs()[1], argv))
+  if(!.init(commandArgs()[1], argv))
   {
     warning("rswipl: running swipl failed.")
     return(FALSE)
