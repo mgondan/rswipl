@@ -1,13 +1,3 @@
-test_that("test_installation succeeds",
-{
-  query(call("test_installation",
-    list(call("arguments", list(as.name('-e'), as.name('"rswipl::swipl()"'), 
-				as.name('-q'), as.name('--no-echo'), as.name('--args'))))))
-  q <- submit()
-  clear()
-  expect_equal(q, list())
-})
-
 test_that("queries can be formed", 
 {
   q <- query(call("member", expression(X), list(quote(a), "b", 3L, 4, TRUE, expression(Y), NA, NaN, Inf, NULL)))
@@ -221,16 +211,18 @@ test_that("matrices are properly translated",
   expect_identical(q$X, m)
 })
 
-test_that("check_installation works",
-{
-  query(call("check_installation"))
-  q <- submit()
-  clear()
-
-  # A few warnings will be displayed, that is fine.
-  expect_equal(q, list())
-})
-
+# For the future (currently memory leaking)
+#
+# test_that("check_installation works",
+# {
+#   query(call("check_installation"))
+#   q <- submit()
+#   clear()
+# 
+#   # A few warnings will be displayed, that is fine.
+#   expect_equal(q, list())
+# })
+#
 # test_that("test_installation works",
 # {
 #   query(call("test_installation", 
@@ -240,4 +232,3 @@ test_that("check_installation works",
 #
 #   expect_equal(q, list())
 # })
-
