@@ -81,6 +81,20 @@
   invisible()
 }
 
+.finalize <- function(libpath)
+{
+  # Clear any open queries
+  clear()
+  if(!.done())
+    stop("rswipl: not initialized.")
+
+  home = options()$rswipl.swi_home_dir
+  if(home == "")
+    Sys.unsetenv("SWI_HOME_DIR")
+  else
+    Sys.setenv(SWI_HOME_DIR=home)
+}
+
 .onAttach <- function(libname, pkgname)
 {
    if(!options()$rswipl.ok)
@@ -103,21 +117,15 @@
   msg <- options()$rswipl.message
   if(msg != "")
      packageStartupMessage(msg)
+
+  parent <- parent.env(environment())
+  reg.finalizer(parent, .finalize, onexit=TRUE)
   invisible()
 }
 
 .onDetach <- function(libpath)
 {
-  # Clear any open queries
-  clear() 
-  if(!.done())
-    stop("rswipl: not initialized.")
-
-  home = options()$rswipl.swi_home_dir
-  if(home == "")
-    Sys.unsetenv("SWI_HOME_DIR")
-  else
-    Sys.setenv(SWI_HOME_DIR=home)
+  .finalize()
 }
 
 #' Invoke SWI-Prolog
