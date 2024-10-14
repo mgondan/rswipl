@@ -1,8 +1,8 @@
 Package: rswipl
 Type: Package
 Title: Embed 'SWI'-'Prolog'
-Version: 9.3.12
-Date: 2024-09-27
+Version: 9.3.13
+Date: 2024-10-14
 Authors@R: c(person("Matthias", "Gondan", role = c("aut", "com", "cre"), email = "Matthias.Gondan-Rochon@uibk.ac.at", comment = "University of Innsbruck"),
   person("Jan", "Wielemaker", role = c("ctb", "cph"), email = "jan@swi-prolog.org", comment = "JW is the lead developer of SWI-Prolog. See https://www.swi-prolog.org/Contributors.html for a list of contributors."),
   person("European Commission", role="fnd", comment="Erasmus+ Programme, 2019-1-EE01-KA203-051708"))
@@ -17,6 +17,7 @@ LinkingTo: Rcpp
 RoxygenNote: 7.3.2
 Encoding: UTF-8
 SystemRequirements:
+    C++17,
     GNU make,
     CMake (>= 3.10),
     pandoc,
