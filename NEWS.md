@@ -2,6 +2,8 @@
 
 See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-16/8645
 
+Fixes a C23 compatibility issue
+
 # rswipl 9.3.15
 
 See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-15/8613
