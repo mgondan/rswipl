@@ -19,7 +19,7 @@ rswipl.o: ../build/done
 
 ../build/done:
 	mkdir -p ../build
-	patch -p2 < 02-clib.patch
+	-patch -p2 < ../inst/patch/02-clib.patch
 ifdef CMAKE_VERSION
 	(cd ../build ; CC="$(CC)" CXX="$(CXX)" CFLAGS="$(CFLAGS1)" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" CXXFLAGS="$(CXX17FLAGS) $(CXX17PICFLAGS)" cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DSWIPL_INSTALL_IN_LIB=ON -DINSTALL_DOCUMENTATION=OFF -DBUILD_TESTING=ON -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_PACKAGES_PYTHON=OFF -S ../src/swipl-devel)
 	LD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} cmake --build ../build
