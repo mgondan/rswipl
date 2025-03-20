@@ -1,5 +1,5 @@
 --- ../src/swipl-devel/packages/cpp/test_cpp.cpp	2025-03-20 19:12:10.575847401 +0100
-+++ ../src/swipl-devel/packages/cpp/test_cpp.cpp.new	2025-03-20 19:10:20.657269138 +0100
++++ ../src/swipl-devel/packages/cpp/test_cpp.cpp	2025-03-20 19:10:20.657269138 +0100
 @@ -671,22 +671,22 @@
  #pragma warning( push )
  #pragma warning (disable:4996)
