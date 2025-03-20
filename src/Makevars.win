@@ -9,6 +9,8 @@ swipl:
 	rm -f ../inst/swipl/bin/*.dll
 	-patch -p2 < ../inst/patch/01-ssl.patch
 	-patch -p2 < ../inst/patch/02-clib.patch
+	-patch -p2 < ../inst/patch/03-cpp.patch
+	-patch -p2 < ../inst/patch/04-cpp.patch
 	( cd ../mingw64 ;\
 		CC="$(CC)" CFLAGS="$(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" cmake\
 		-DCMAKE_INSTALL_PREFIX=../inst/swipl\
