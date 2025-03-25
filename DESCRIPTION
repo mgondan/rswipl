@@ -18,7 +18,7 @@ RoxygenNote: 7.3.2
 Encoding: UTF-8
 SystemRequirements:
     GNU make,
-    CMake (>= 3.10),
+    CMake (>= 3.20),
     pandoc,
     libarchive,
     libregex,
