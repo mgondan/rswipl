@@ -1,10 +1,14 @@
+# rswipl 9.3.29
+
+See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-29/
+
 # rswipl 9.3.28
 
 See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-28/
 
 # rswipl 9.3.27
 
-See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-27/9151
+See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-27/
 
 # rswipl 9.3.26
 
@@ -12,15 +16,15 @@ See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-26/
 
 # rswipl 9.3.25
 
-See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-25/9070
+See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-25/
 
 # rswipl 9.3.22
 
-See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-22/8926
+See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-22/
 
 # rswipl 9.3.21
 
-See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-21/8879
+See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-21/
 
 Fixes a problem reported for r-oldrel-windows
 
