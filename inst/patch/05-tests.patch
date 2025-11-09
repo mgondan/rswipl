@@ -1,0 +1,70 @@
+--- ../src/swipl-devel/tests/save/test_saved_states.pl	2025-10-26 18:05:41.109495022 +0100
++++ ../src/swipl-devel/tests/save/test_saved_states.pl	2025-10-26 20:02:04.094234379 +0100
+@@ -120,7 +120,16 @@
+     format(atom(File), 'test_state_~w_~w.exe', [Id, Pid]),
+     directory_file_path(Dir, File, State).
+ 
+-me(Exe) :-
++me(Exe, Args) :-
++    current_prolog_flag(executable, RExeOS),
++    prolog_to_os_filename(RExe, RExeOS),
++    file_base_name(RExe, R),
++    downcase_atom(R, Rdown),
++    member(Rdown, [r, 'r.exe']),
++    !,
++    Exe = RExeOS,
++    Args = ['-s', '-e', 'rswipl::swipl()', '--args'].
++me(Exe, Args) :-
+     current_prolog_flag(executable, WinExeOS),
+     prolog_to_os_filename(WinExe, WinExeOS),
+     file_base_name(WinExe, WinFile),
+@@ -128,14 +137,14 @@
+     !,
+     file_directory_name(WinExe, WinDir),
+     atomic_list_concat([WinDir, 'swipl.exe'], /, PlExe),
+-    prolog_to_os_filename(PlExe, Exe).
+-me(MeSH) :-
+-    absolute_file_name('swipl.sh', MeSH,
+-                       [ access(execute),
+-                         file_errors(fail)
+-                       ]),
+-    !.
+-me(Exe) :-
++    prolog_to_os_filename(PlExe, Exe),
++    Args = [].
++me(MeSH, Args) :-
++    absolute_file_name('swipl.sh', MeSH0, [access(execute), file_errors(fail)]),
++    !,
++    MeSH = MeSH0,
++    Args = [].
++me(Exe, []) :-
+     current_prolog_flag(executable, Exe).
+ 
+ :- dynamic
+@@ -156,8 +165,9 @@
+ set_windows_path.
+ 
+ create_state(File, Output, Args) :-
+-    me(Me),
+-    append(Args, ['-o', Output, '-c', File, '-f', none], AllArgs),
++    me(Me, Args0),
++    append(Args0, Args, Args1),
++    append(Args1, ['-o', Output, '-c', File, '-f', none], AllArgs),
+     test_dir(TestDir),
+     debug(save, 'Creating state in ~q using ~q ~q', [TestDir, Me, AllArgs]),
+     process_create(Me, AllArgs,
+@@ -173,10 +183,12 @@
+     debug(save, 'Running state ~q ~q', [Exe, Args]),
+     set_windows_path,
+     current_prolog_flag(home, HOME), % needed for MSYS2
+-    process_create(Exe, Args,
++    me(Me, Args0),
++    append([Args0, ['-x', Exe], Args], Args1),
++    process_create(Me, Args1,
+                    [ stdout(pipe(Out)),
+                      stderr(pipe(Err)),
+-                     environment(['SWI_HOME_DIR'=HOME])
++                     environment(['SWI_HOME_DIR'=HOME, 'R_HOME'='/usr/lib/R'])
+                    ]),
+     call_cleanup(
+         ( read_terms(Out, Result),

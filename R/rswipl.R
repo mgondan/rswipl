@@ -143,7 +143,7 @@ swipl <- function(sigalert=NA)
   if(!options()$rswipl.ok)
     return(FALSE)
 
-  argv <- "-q"
+  argv <- NULL
   if(!is.na(sigalert) & .Platform$OS.type == "unix")
     argv <- c(argv, sprintf("--sigalert=%i", sigalert))
   argv <- c(commandArgs(TRUE), argv)

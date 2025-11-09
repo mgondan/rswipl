@@ -4,3 +4,4 @@ patch -p2 < ../inst/patch/01-ssl.patch
 patch -p2 < ../inst/patch/02-clib.patch
 patch -p2 < ../inst/patch/03-cpp.patch
 patch -p2 < ../inst/patch/04-cpp.patch
+patch -p2 < ../inst/patch/05-tests.patch
