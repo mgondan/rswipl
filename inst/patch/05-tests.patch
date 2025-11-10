@@ -1,5 +1,22 @@
 --- ../src/swipl-devel/tests/save/test_saved_states.pl	2025-10-26 18:05:41.109495022 +0100
 +++ ../src/swipl-devel/tests/save/test_saved_states.pl	2025-10-26 20:02:04.094234379 +0100
+@@ -149,0 +149,5 @@
+     downcase_atom(WinFile, 'swipl-win.exe'),
+     !,
+     file_directory_name(WinExe, WinDir),
+     atomic_list_concat([WinDir, 'swipl.exe'], /, PlExe),
+     prolog_to_os_filename(PlExe, Exe).
++me(MeSH) :-
++    current_prolog_flag(windows, true),
++    absolute_file_name('swipl.bat', MeSH, [ file_errors(fail) ]),
++    !.
+ me(MeSH) :-
++    \+ current_prolog_flag(windows, true),
+     absolute_file_name('swipl.sh', MeSH,
+                        [ access(execute),
+                          file_errors(fail)
+                        ]),
+     !.
 @@ -195,10 +195,11 @@
      debug(save, 'Running state ~q ~q', [Exe, Args]),
      set_windows_path,
