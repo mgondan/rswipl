@@ -9,10 +9,20 @@ test_that("change working directory",
 
 test_that("swipl is working",
 {
+  if(file.exists("swipl.sh"))
+    return(expect(!file_exists("swipl.sh"), 
+      "swipl.sh should not exists in folder testthat"))
+
+  R <- file.path(R.home("bin"), "R")
+  SWIPL <- sprintf("#!/bin/sh\n%s -s -e 'rswipl::swipl()' --args $@", R) 
+  cat(SWIPL, file="swipl.sh")
+  Sys.chmod("swipl.sh", file.mode("swipl.sh") | "700")
+
   query(call("test_installation", list(quote(packages(FALSE)))))
   q <- submit()
   clear()
 
+  unlink("swipl.sh")
   expect_equal(q, list())
 })
 

@@ -4,7 +4,6 @@ PKG_LIBS=-Wl,-Bsymbolic-functions -L../inst/swipl/bin -lswipl -lgmp -lz -lm -lpt
 all: swipl $(SHLIB)
 
 swipl:
-	-patch -N -p2 < ../inst/patch/01-ssl.patch
 	-patch -N -p2 < ../inst/patch/02-clib.patch
 	-patch -N -p2 < ../inst/patch/03-cpp.patch
 	-patch -N -p2 < ../inst/patch/04-cpp.patch
