@@ -1,32 +1,102 @@
---- ../src/swipl-devel/tests/save/test_saved_states.pl	2025-10-26 18:05:41.109495022 +0100
-+++ ../src/swipl-devel/tests/save/test_saved_states.pl	2025-10-26 20:02:04.094234379 +0100
-@@ -127,11 +127,16 @@
-     downcase_atom(WinFile, 'swipl-win.exe'),
+--- ../src/swipl-devel/tests/save/test_saved_states.pl	2025-11-10 23:24:20.742422715 +0100
++++ ../src/swipl-devel/tests/save/test_saved_states.pl	2025-11-10 23:24:05.760857798 +0100
+@@ -72,6 +72,11 @@
+            'Skipped saved state files because the system does\n\c
+         not offer us enough open files~n', []).
+ test_saved_states :-
++    \+ directory_writable,
++    !,
++    format(user_error,
++           'Skipped saved states (current directory not writable)~n', []).
++test_saved_states :-
+     run_tests([ saved_state
+               ]).
+ 
+@@ -110,6 +115,23 @@
+     debug(save(max_files), 'No info on max open files; assuming ok', []).
+ :- endif.
+ 
++%   Skip tests if current directory is not writable.
++directory_writable :-
++    setup_call_cleanup(
++        ( current_prolog_flag(tmp_dir, Old), set_prolog_flag(tmp_dir, .) ),
++        create_temp_file,
++        set_prolog_flag(tmp_dir, Old)
++    ).
++
++create_temp_file :-
++    catch(tmp_file_stream(text, Name, S), Exc, true),
++    (   var(Exc)
++    ->  close(S),
++        delete_file(Name)
++    ;   debug(save(writable), 'Current directory not writable: ~w.', [Exc]),
++        fail
++    ).
++
+ %!  state_output(+Id, -FileName)
+ %
+ %   Name of the file we use for temporary output of the state.
+@@ -120,7 +142,7 @@
+     format(atom(File), 'test_state_~w_~w.exe', [Id, Pid]),
+     directory_file_path(Dir, File, State).
+ 
+-me(Exe) :-
++me(Exe, Args) :-
+     current_prolog_flag(executable, WinExeOS),
+     prolog_to_os_filename(WinExe, WinExeOS),
+     file_base_name(WinExe, WinFile),
+@@ -128,14 +150,27 @@
      !,
      file_directory_name(WinExe, WinDir),
      atomic_list_concat([WinDir, 'swipl.exe'], /, PlExe),
-     prolog_to_os_filename(PlExe, Exe).
-+me(MeSH) :-
+-    prolog_to_os_filename(PlExe, Exe).
+-me(MeSH) :-
+-    absolute_file_name('swipl.sh', MeSH,
++    prolog_to_os_filename(PlExe, Exe),
++    Args = [].
++me(MeSH, Args) :-
 +    current_prolog_flag(windows, true),
-+    absolute_file_name('swipl.bat', MeSH, [access(execute), file_errors(fail)]),
-+    !.
- me(MeSH) :-
++    absolute_file_name('swipl.bat', MeSH0, 
++                       [ access(execute),
++                         file_errors(fail) 
++                       ]),
++    !,
++    MeSH = path(cmd),
++    Args = ['/c', 'swipl.bat'].
++me(MeSH, Args) :-
 +    \+ current_prolog_flag(windows, true),
-     absolute_file_name('swipl.sh', MeSH,
++    absolute_file_name('swipl.sh', MeSH0,
                         [ access(execute),
                           file_errors(fail)
                         ]),
-     !.
-@@ -173,10 +178,11 @@
+-    !.
+-me(Exe) :-
++    !,
++    MeSH = MeSH0,
++    Args = [].
++me(Exe, []) :-
+     current_prolog_flag(executable, Exe).
+ 
+ :- dynamic
+@@ -156,8 +191,8 @@
+ set_windows_path.
+ 
+ create_state(File, Output, Args) :-
+-    me(Me),
+-    append(Args, ['-o', Output, '-c', File, '-f', none], AllArgs),
++    me(Me, Args0),
++    append([Args0, Args, ['-o', Output, '-c', File, '-f', none]], AllArgs),
+     test_dir(TestDir),
+     debug(save, 'Creating state in ~q using ~q ~q', [TestDir, Me, AllArgs]),
+     process_create(Me, AllArgs,
+@@ -173,7 +208,9 @@
      debug(save, 'Running state ~q ~q', [Exe, Args]),
      set_windows_path,
      current_prolog_flag(home, HOME), % needed for MSYS2
 -    process_create(Exe, Args,
-+    me(Me),
-+    process_create(Me, ['-x', Exe | Args],
++    me(Me, Args0),
++    append([Args0, ['-x', Exe], Args], AllArgs)
++    process_create(Me, AllArgs,
                     [ stdout(pipe(Out)),
                       stderr(pipe(Err)),
                       environment(['SWI_HOME_DIR'=HOME])
-                    ]),
-     call_cleanup(
-         ( read_terms(Out, Result),
