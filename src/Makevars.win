@@ -8,6 +8,7 @@ swipl:
 	-patch -N -p2 < ../inst/patch/02-clib.patch
 	-patch -N -p2 < ../inst/patch/03-cpp.patch
 	-patch -N -p2 < ../inst/patch/04-cpp.patch
+	-patch -N -p2 < ../inst/patch/05-tests.patch
 	mkdir -p ../mingw64
 	mkdir -p ../inst/swipl/bin
 	rm -f ../inst/swipl/bin/*.dll
@@ -16,7 +17,7 @@ swipl:
 		-DCMAKE_INSTALL_PREFIX=../inst/swipl\
 		-DSWIPL_PACKAGES_GUI=OFF -DSWIPL_PACKAGES_ODBC=OFF\
 		-DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_PYTHON=OFF\
-		-DBUILD_TESTING=ON\
+		-DBUILD_TESTING=ON -DINSTALL_TESTS=ON\
 		-DCMAKE_CXX_STANDARD=17\
 		-DUSE_GMP=ON\
 		-DMINGW_ROOT=$(R_TOOLS_SOFT)\
