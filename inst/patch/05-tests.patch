@@ -45,7 +45,11 @@
      current_prolog_flag(executable, WinExeOS),
      prolog_to_os_filename(WinExe, WinExeOS),
      file_base_name(WinExe, WinFile),
+<<<<<<< HEAD
 @@ -128,14 +150,28 @@
+=======
+@@ -128,14 +150,27 @@
+>>>>>>> 69222676cba01029e981464083a107b51c82a57c
      !,
      file_directory_name(WinExe, WinDir),
      atomic_list_concat([WinDir, 'swipl.exe'], /, PlExe),
