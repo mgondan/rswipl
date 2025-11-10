@@ -1,6 +1,6 @@
 --- ../src/swipl-devel/tests/save/test_saved_states.pl	2025-10-26 18:05:41.109495022 +0100
 +++ ../src/swipl-devel/tests/save/test_saved_states.pl	2025-10-26 20:02:04.094234379 +0100
-@@ -149,0 +149,5 @@
+@@ -127,11 +127,16 @@
      downcase_atom(WinFile, 'swipl-win.exe'),
      !,
      file_directory_name(WinExe, WinDir),
@@ -8,7 +8,7 @@
      prolog_to_os_filename(PlExe, Exe).
 +me(MeSH) :-
 +    current_prolog_flag(windows, true),
-+    absolute_file_name('swipl.bat', MeSH, [ file_errors(fail) ]),
++    absolute_file_name('swipl.bat', MeSH, [access(execute), file_errors(fail)]),
 +    !.
  me(MeSH) :-
 +    \+ current_prolog_flag(windows, true),
@@ -17,7 +17,7 @@
                           file_errors(fail)
                         ]),
      !.
-@@ -195,10 +195,11 @@
+@@ -173,10 +178,11 @@
      debug(save, 'Running state ~q ~q', [Exe, Args]),
      set_windows_path,
      current_prolog_flag(home, HOME), % needed for MSYS2

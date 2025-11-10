@@ -27,6 +27,7 @@ swipl:
 	find ../mingw64 -name Makefile -exec sed -i 's/\r//' \{\} \;
 	make -C ../mingw64 install
 	-( cd ../mingw64 ; ctest )
+	-( cd ../mingw64 ; ctest --rerun-failed --output-on-failure)
 	rm ../inst/swipl/bin/swipl.exe
 	rm ../inst/swipl/bin/swipl-win.exe
 	rm ../inst/swipl/bin/swipl-ld.exe

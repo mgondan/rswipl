@@ -38,9 +38,11 @@ endif
 endif
 ifdef CTEST_VERSION
 	-(cd ../build ; LD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} ctest)
+	-(cd ../build ; LD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} ctest --rerun-failed --output-on-failure)
 else
 ifdef CTEST_VERSION_MACOS
 	-(cd ../build ; /Applications/CMake.app/Contents/bin/ctest)
+	-(cd ../build ; /Applications/CMake.app/Contents/bin/ctest --rerun-failed --output-on-failure)
 else
 	$(message Please install ctest on your system)
 endif
