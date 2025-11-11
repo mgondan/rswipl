@@ -61,7 +61,7 @@
 +                         file_errors(fail) 
 +                       ]),
 +    !,
-+    Cmd = path(cmd),
++    Cmd = path('cmd.exe'),
 +    prolog_to_os_filename(MeSH0, MeSH),
 +    Args = ['/c', MeSH].
 +me(MeSH, Args) :-
