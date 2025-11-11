@@ -4,7 +4,7 @@
             'Skipped saved state files because the system does\n\c
          not offer us enough open files~n', []).
  test_saved_states :-
-+    \+ directory_writable,
++    ignore(\+ directory_writable),
 +    !,
 +    format(user_error,
 +           'Skipped saved states (current directory not writable)~n', []).
