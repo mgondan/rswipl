@@ -11,18 +11,23 @@ test_that("swipl is working",
 {
   if(.Platform$OS.type == "windows")
     SWIPL_SH <- "swipl.bat"
-  else
+  if(.Platform$OS.type == "unix")
     SWIPL_SH <- "swipl.sh"
   
   if(file.exists(SWIPL_SH))
     return(expect(!file_exists("SWIPL_SH"), 
       "swipl.sh/bat should not exist in folder testthat"))
 
-  R <- file.path(R.home("bin"), "R")
   if(.Platform$OS.type == "windows")
-    SWIPL <- sprintf('"%s" -s -e "rswipl::swipl()" --args %%*', R) 
-  else
+  {
+    R <- normalizePath(file.path(R.home("bin"), "R.exe"))
+    SWIPL <- sprintf('@"%s" -s -e "rswipl::swipl()" --args %%*', R)
+  }
+  if(.Platform$OS.type == "unix")
+  {
+    R <- file.path(R.home("bin"), "R")
     SWIPL <- sprintf('#!/bin/sh\n"%s" -s -e "rswipl::swipl()" --args $@', R)
+  }
   cat(SWIPL, file=SWIPL_SH)
   Sys.chmod(SWIPL_SH, file.mode(SWIPL_SH) | "700")
 
