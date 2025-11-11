@@ -4,7 +4,7 @@
             'Skipped saved state files because the system does\n\c
          not offer us enough open files~n', []).
  test_saved_states :-
-+    ignore(\+ directory_writable),
++    \+ directory_writable,
 +    !,
 +    format(user_error,
 +           'Skipped saved states (current directory not writable)~n', []).
@@ -54,14 +54,14 @@
 -    absolute_file_name('swipl.sh', MeSH,
 +    prolog_to_os_filename(PlExe, Exe),
 +    Args = [].
-+me(MeSH, Args) :-
++me(Cmd, Args) :-
 +    current_prolog_flag(windows, true),
 +    absolute_file_name('swipl.bat', MeSH0, 
 +                       [ access(execute),
 +                         file_errors(fail) 
 +                       ]),
 +    !,
-+    MeSH = path(cmd),
++    Cmd = path(cmd),
 +    prolog_to_os_filename(MeSH0, MeSH),
 +    Args = ['/c', MeSH].
 +me(MeSH, Args) :-
@@ -96,7 +96,7 @@
      current_prolog_flag(home, HOME), % needed for MSYS2
 -    process_create(Exe, Args,
 +    me(Me, Args0),
-+    append([Args0, ['-x', Exe], Args], AllArgs),
++    append([Args0, ['-x', Exe, '--'], Args], AllArgs),
 +    process_create(Me, AllArgs,
                     [ stdout(pipe(Out)),
                       stderr(pipe(Err)),
