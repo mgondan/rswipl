@@ -21,7 +21,7 @@ test_that("swipl is working",
   if(.Platform$OS.type == "windows")
   {
     R <- normalizePath(file.path(R.home("bin"), "R.exe"))
-    SWIPL <- sprintf('@"%s" -s -e "rswipl::swipl()" --args %%*', R)
+    SWIPL <- sprintf('@cmd /c "%s" -s -e rswipl::swipl() --args %%*', R)
   }
   if(.Platform$OS.type == "unix")
   {
