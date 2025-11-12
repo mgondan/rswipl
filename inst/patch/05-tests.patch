@@ -90,14 +90,15 @@
      test_dir(TestDir),
      debug(save, 'Creating state in ~q using ~q ~q', [TestDir, Me, AllArgs]),
      process_create(Me, AllArgs,
-@@ -173,7 +208,9 @@
+@@ -173,7 +208,10 @@
      debug(save, 'Running state ~q ~q', [Exe, Args]),
      set_windows_path,
      current_prolog_flag(home, HOME), % needed for MSYS2
 -    process_create(Exe, Args,
 +    me(Me, Args0),
 +    append([Args0, ['-x', Exe, '--'], Args], AllArgs),
-+    process_create(Me, AllArgs,
++    atomic_list_concat(AllArgs, ' ', ArgStr),
++    process_create(Me, [ArgStr],
                     [ stdout(pipe(Out)),
                       stderr(pipe(Err)),
                       environment(['SWI_HOME_DIR'=HOME])
