@@ -1,9 +1,6 @@
---- ../src/swipl-devel/tests/save/test_saved_states.pl	2025-11-10 23:24:20.742422715 +0100
-+++ ../src/swipl-devel/tests/save/test_saved_states.pl	2025-11-10 23:24:05.760857798 +0100
- %!  state_output(+Id, -FileName)
- %
- %   Name of the file we use for temporary output of the state.
-@@ -120,7 +142,7 @@
+--- ../src/swipl-devel/tests/save/test_saved_states.pl.orig	2025-11-13 15:10:25.640455493 +0100
++++ ../src/swipl-devel/tests/save/test_saved_states.pl	2025-11-13 15:19:43.276897446 +0100
+@@ -120,7 +120,7 @@
      format(atom(File), 'test_state_~w_~w.exe', [Id, Pid]),
      directory_file_path(Dir, File, State).
  
@@ -12,7 +9,7 @@
      current_prolog_flag(executable, WinExeOS),
      prolog_to_os_filename(WinExe, WinExeOS),
      file_base_name(WinExe, WinFile),
-@@ -128,14 +150,28 @@
+@@ -128,14 +128,31 @@
      !,
      file_directory_name(WinExe, WinDir),
      atomic_list_concat([WinDir, 'swipl.exe'], /, PlExe),
@@ -21,32 +18,35 @@
 -    absolute_file_name('swipl.sh', MeSH,
 +    prolog_to_os_filename(PlExe, Exe),
 +    Args = [].
++
++% In embedded systems, swipl may not be invoked directly, but
++% by some shell script.
 +me(Cmd, Args) :-
-+    current_prolog_flag(windows, true),
-+    absolute_file_name('swipl.bat', MeSH0, 
++    absolute_file_name('swipl.sh', MeSH,
 +                       [ access(execute),
-+                         file_errors(fail) 
++                         file_errors(fail)
 +                       ]),
 +    !,
-+    Cmd = path('cmd.exe'),
-+    prolog_to_os_filename(MeSH0, MeSH),
-+    Args = ['/c', MeSH].
-+me(MeSH, Args) :-
-+    \+ current_prolog_flag(windows, true),
-+    absolute_file_name('swipl.sh', MeSH0,
++    Cmd = path(sh),
++    Args = [MeSH].
++
++% Windows version
++me(Cmd, Args) :-
++    absolute_file_name('swipl.bat', MeBat,
                         [ access(execute),
                           file_errors(fail)
                         ]),
 -    !.
 -me(Exe) :-
 +    !,
-+    MeSH = MeSH0,
-+    Args = [].
++    Cmd = path('cmd.exe'),
++    prolog_to_os_filename(MeBat, OsName),
++    Args = ['/c', OsName].
 +me(Exe, []) :-
      current_prolog_flag(executable, Exe).
  
  :- dynamic
-@@ -156,8 +191,8 @@
+@@ -156,8 +173,8 @@
  set_windows_path.
  
  create_state(File, Output, Args) :-
@@ -57,15 +57,34 @@
      test_dir(TestDir),
      debug(save, 'Creating state in ~q using ~q ~q', [TestDir, Me, AllArgs]),
      process_create(Me, AllArgs,
-@@ -173,7 +208,10 @@
+@@ -170,6 +187,30 @@
+     assertion(no_error(ErrOutput)).
+ 
+ run_state(Exe, Args, Result) :-
++    me(_, []),
++    !,
++    run_state1(Exe, Args, Result).
++
++% If swipl.bat is used, the state needs to be invoked swipl -x state.
++% Typical commands look like this: swipl.bat -x state.exe -- args. For
++% reasons not fully understood, the 2nd unit test (echo_argv) then
++% collates the arguments to one single, returning ['-- aap noot mies']
++% instead of [aap,noot,mies]. Happens only under Windows. The
++% atomic_list_concat/3 in the 5th line avoids this undesired behavior.
++run_state(Exe, Args, Result) :-
++    me(Me, Args0),
++    current_prolog_flag(windows, true),
++    !,
++    append([Args0, ['-x', Exe, '--'], Args], AllArgs),
++    atomic_list_concat(AllArgs, ArgStr),
++    run_state1(Me, [ArgStr], Result).
++
++run_state(Exe, Args, Result) :-
++    me(Me, Args0),
++    append([Args0, ['-x', Exe, '--'], Args], AllArgs),
++    run_state1(Me, AllArgs, Result).
++
++run_state1(Exe, Args, Result) :-
      debug(save, 'Running state ~q ~q', [Exe, Args]),
      set_windows_path,
      current_prolog_flag(home, HOME), % needed for MSYS2
--    process_create(Exe, Args,
-+    me(Me, Args0),
-+    append([Args0, ['-x', Exe, '--'], Args], AllArgs),
-+    atomic_list_concat(AllArgs, ' ', ArgStr),
-+    process_create(Me, [ArgStr],
-                    [ stdout(pipe(Out)),
-                      stderr(pipe(Err)),
-                      environment(['SWI_HOME_DIR'=HOME])
