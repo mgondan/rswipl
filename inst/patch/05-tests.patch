@@ -1,38 +1,5 @@
 --- ../src/swipl-devel/tests/save/test_saved_states.pl	2025-11-10 23:24:20.742422715 +0100
 +++ ../src/swipl-devel/tests/save/test_saved_states.pl	2025-11-10 23:24:05.760857798 +0100
-@@ -72,6 +72,11 @@
-            'Skipped saved state files because the system does\n\c
-         not offer us enough open files~n', []).
- test_saved_states :-
-+    \+ directory_writable,
-+    !,
-+    format(user_error,
-+           'Skipped saved states (current directory not writable)~n', []).
-+test_saved_states :-
-     run_tests([ saved_state
-               ]).
- 
-@@ -110,6 +115,23 @@
-     debug(save(max_files), 'No info on max open files; assuming ok', []).
- :- endif.
- 
-+%   Skip tests if current directory is not writable.
-+directory_writable :-
-+    setup_call_cleanup(
-+        ( current_prolog_flag(tmp_dir, Old), set_prolog_flag(tmp_dir, .) ),
-+        create_temp_file,
-+        set_prolog_flag(tmp_dir, Old)
-+    ).
-+
-+create_temp_file :-
-+    catch(tmp_file_stream(text, Name, S), Exc, true),
-+    (   var(Exc)
-+    ->  close(S),
-+        delete_file(Name)
-+    ;   debug(save(writable), 'Current directory not writable: ~w.', [Exc]),
-+        fail
-+    ).
-+
  %!  state_output(+Id, -FileName)
  %
  %   Name of the file we use for temporary output of the state.
