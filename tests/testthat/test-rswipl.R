@@ -21,12 +21,12 @@ test_that("swipl is working",
   if(.Platform$OS.type == "windows")
   {
     R <- normalizePath(file.path(R.home("bin"), "R.exe"))
-    SWIPL <- sprintf('@"%s" -s -e rswipl::swipl() --args %%*', R)
+    SWIPL <- sprintf('@"%s" -s -e rswipl::swipl() --args %%*\n', R)
   }
   if(.Platform$OS.type == "unix")
   {
     R <- file.path(R.home("bin"), "R")
-    SWIPL <- sprintf('#!/bin/sh\n"%s" -s -e "rswipl::swipl()" --args $@', R)
+    SWIPL <- sprintf('#!/bin/sh\n"%s" -s -e rswipl::swipl\\(\\) --args $@\n', R)
   }
   cat(SWIPL, file=SWIPL_SH)
   Sys.chmod(SWIPL_SH, file.mode(SWIPL_SH) | "700")
