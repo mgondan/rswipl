@@ -12,14 +12,14 @@
 -    !,
 -    MeSH = MeSH0,
 -    Args = [].
-+me(MeSH, Args) :-                    % Using a shell script
-+    absolute_file_name('swipl.sh', MeSH0,
++me(Cmd, Args) :-                     % Using a shell script
++    absolute_file_name('swipl.sh', MeSH,
 +                       [ access(execute),
 +                         file_errors(fail)
 +                       ]),
 +    !,
-+    MeSH = MeSH0,
-+    Args = [].
++    Cmd = path(sh),
++    Args = [MeSH].
  me(Cmd, Args) :-                     % Windows: use .bat file
      current_prolog_flag(windows, true),
      absolute_file_name('swipl.bat', MeBat,
