@@ -27,11 +27,12 @@ test_that("swipl is working",
   {
     R <- file.path(R.home("bin"), "R")
     SWIPL <- sprintf('#!/bin/sh\n"%s" -s -e rswipl::swipl\\(\\) --args $@\n', R)
+    SWIPL <- '#!/bin/sh\n/usr/local/bin/swipl $@\n'
   }
   cat(SWIPL, file=SWIPL_SH)
-  Sys.chmod(SWIPL_SH, file.mode(SWIPL_SH) | "700")
+  Sys.chmod(SWIPL_SH, mode="0744")
 
-  query(call("test_installation", list(quote(packages(FALSE)))))
+  query(call("test_installation", list(call("packages", FALSE))))
   q <- submit()
   clear()
 
