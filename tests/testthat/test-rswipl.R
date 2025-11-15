@@ -27,7 +27,6 @@ test_that("swipl is working",
   {
     R <- file.path(R.home("bin"), "R")
     SWIPL <- sprintf('#!/bin/sh\n"%s" -s -e rswipl::swipl\\(\\) --args $@\n', R)
-    SWIPL <- '#!/bin/sh\n/usr/local/bin/swipl $@\n'
   }
   cat(SWIPL, file=SWIPL_SH)
   Sys.chmod(SWIPL_SH, mode="0744")
