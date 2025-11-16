@@ -19,7 +19,7 @@
  me(Cmd, Args) :-                     % Windows: use .bat file
      current_prolog_flag(windows, true),
      absolute_file_name('swipl.bat', MeBat,
-@@ -155,6 +155,23 @@
+@@ -176,6 +176,23 @@
      asserta(win_path_set).
  set_windows_path.
  
@@ -43,7 +43,7 @@
  create_state(File, Output, Args) :-
      me(Me, Args0),
      append([Args0, Args, ['-o', Output, '-c', File, '-f', none]], AllArgs),
-@@ -189,11 +189,9 @@
+@@ -216,11 +233,9 @@
  run_state1(Exe, Args, Result) :-
      debug(save, 'Running state ~q ~q', [Exe, Args]),
      set_windows_path,
@@ -56,7 +56,7 @@
                     ]),
      call_cleanup(
          ( read_terms(Out, Result),
-@@ -209,6 +209,19 @@
+@@ -238,6 +253,19 @@
  remove_state(State) :-
      catch(delete_file(State), _, true).
  
@@ -76,7 +76,7 @@
  %!  read_terms(+In:stream, -Data:list)
  %
  %   True when Data are the Prolog terms on In.
-@@ -251,6 +251,13 @@
+@@ -267,6 +295,13 @@
  wine :-
      current_prolog_flag(wine_version, _).
  
@@ -90,7 +90,7 @@
  :- begin_tests(saved_state, [condition(not(wine))]).
  
  test(true, Result == [true]) :-
-@@ -282,6 +282,17 @@
+@@ -291,6 +326,17 @@
          ),
          remove_state(Exe)).
  
