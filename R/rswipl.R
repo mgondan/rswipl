@@ -124,7 +124,7 @@
     R <- normalizePath(file.path(R.home("bin"), "R"))
 
   .prolog("dynamic(prolog:prolog_tool/4)")
-  Rcmd <- sprintf("assert(prolog:prolog_tool(swipl, '%s', Argv, 
+  Rcmd <- sprintf("assert(prolog:prolog_tool(swipl, %s, Argv, 
                   ['-s', '-e', 'rswipl::swipl()', '--args' | Argv]))", R)
   .prolog(Rcmd)
 
