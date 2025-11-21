@@ -116,7 +116,15 @@
 
   msg <- options()$rswipl.message
   if(msg != "")
-     packageStartupMessage(msg)
+    packageStartupMessage(msg)
+
+  if(.Platform$OS.type == "windows")
+    R <- normalizePath(file.path(R.home("bin"), "R.exe"))
+  if(.Platform$OS.type == "unix")
+    R <- normalizePath(file.path(R.home("bin"), "R"))
+
+  .prolog("dynamic(prolog:prolog_tool/4)")
+  .prolog("assert(prolog:prolog_tool(swipl, path('R'), Argv, ['-s', '-e', 'rswipl::swipl()', '--args' | Argv]))")
 
   parent <- parent.env(environment())
   reg.finalizer(parent, .finalize, onexit=TRUE)
@@ -157,3 +165,12 @@ swipl <- function(sigalert=NA)
   invisible()
 }
 
+# Call Prolog with a string
+.prolog <- function(S)
+{
+  query(call(",", call("term_string", expression(Term), S), 
+    call("call", expression(Term))))
+  q <- submit()
+  clear()
+  return(q)
+}
