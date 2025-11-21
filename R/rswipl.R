@@ -124,7 +124,9 @@
     R <- normalizePath(file.path(R.home("bin"), "R"))
 
   .prolog("dynamic(prolog:prolog_tool/4)")
-  .prolog("assert(prolog:prolog_tool(swipl, path('R'), Argv, ['-s', '-e', 'rswipl::swipl()', '--args' | Argv]))")
+  Rcmd <- sprintf("assert(prolog:prolog_tool(swipl, '%s', Argv, 
+                  ['-s', '-e', 'rswipl::swipl()', '--args' | Argv]))", R)
+  .prolog(Rcmd)
 
   parent <- parent.env(environment())
   reg.finalizer(parent, .finalize, onexit=TRUE)
