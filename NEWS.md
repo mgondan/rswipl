@@ -1,3 +1,9 @@
+# rswipl 9.3.35
+
+See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-35/
+
+test\_installation is now part of the unit tests
+
 # rswipl 9.3.34
 
 See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-34/
