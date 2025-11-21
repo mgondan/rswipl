@@ -13,7 +13,6 @@ test_that("swipl is working",
   q <- submit()
   clear()
 
-  unlink(SWIPL_SH)
   expect_equal(q, list())
 })
 
