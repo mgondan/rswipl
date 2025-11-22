@@ -5,7 +5,7 @@ file.copy(files, dest, overwrite=TRUE)
 if(file.exists("symbols.rds"))
     file.copy("symbols.rds", dest, overwrite=TRUE)
 
-# The lines below are needed because file.copy does not copy symbolic links
+# The lines below are needed under unix because file.copy does not copy symbolic links
 if(SHLIB_EXT == ".so")
 {
   unlink(file.path("inst", "swipl", "lib", "libswipl.so"))
