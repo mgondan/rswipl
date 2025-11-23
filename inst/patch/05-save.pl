@@ -1,5 +1,5 @@
---- swipl-devel/tests/save/test_saved_states.pl	2025-11-23 17:54:03.256571446 +0100
-+++ swipl-devel/tests/save/test_saved_states.pl.new	2025-11-23 17:52:38.075100230 +0100
+--- ../src/swipl-devel/tests/save/test_saved_states.pl	2025-11-23 17:54:03.256571446 +0100
++++ ../src/swipl-devel/tests/save/test_saved_states.pl.new	2025-11-23 17:52:38.075100230 +0100
 @@ -202,7 +202,10 @@
  %   saved state does not terminate.
  
