@@ -119,9 +119,9 @@
     packageStartupMessage(msg)
 
   if(.Platform$OS.type == "windows")
-    R <- normalizePath(file.path(R.home("bin"), "R.exe"))
+    R <- file.path(R.home("bin"), "R.exe")
   if(.Platform$OS.type == "unix")
-    R <- normalizePath(file.path(R.home("bin"), "R"))
+    R <- file.path(R.home("bin"), "R")
 
   .prolog("dynamic(prolog:prolog_tool/4)")
   Rcmd <- sprintf("asserta(prolog:prolog_tool(swipl, '%s', Argv, 
@@ -176,4 +176,5 @@ swipl <- function(sigalert=NA)
   clear()
   return(q)
 }
+
 
