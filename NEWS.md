@@ -1,3 +1,7 @@
+# rswipl 9.3.36
+
+See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-36/
+
 # rswipl 9.3.35
 
 See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-35/

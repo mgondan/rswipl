@@ -21,7 +21,6 @@ rswipl.o: ../build/done
 	-patch -N -p2 < ../inst/patch/02-clib.patch
 	-patch -N -p2 < ../inst/patch/03-cpp.patch
 	-patch -N -p2 < ../inst/patch/04-cpp.patch
-	-patch -N -p2 < ../inst/patch/05-save.patch
 	mkdir -p ../build
 ifdef CMAKE_VERSION
 	(cd ../build ; CC="$(CC)" CXX="$(CXX)" CFLAGS="$(CFLAGS1)" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" CXXFLAGS="$(CXX17FLAGS) $(CXX17PICFLAGS)" cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DMACOSX_DEPENDENCIES_FROM=Homebrew -DSWIPL_INSTALL_IN_LIB=ON -DINSTALL_DOCUMENTATION=OFF -DBUILD_TESTING=ON -DINSTALL_TESTS=ON -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_GUI=OFF -DSWIPL_PACKAGES_ODBC=OFF -DUSE_GMP=OFF -DSWIPL_PACKAGES_PYTHON=OFF -S ../src/swipl-devel)
