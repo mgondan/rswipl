@@ -1,3 +1,7 @@
+# rswipl 10.0.0
+
+See https://swi-prolog.discourse.group/t/ann-swi-prolog-10-0-0-stable/
+
 # rswipl 9.3.36
 
 See https://swi-prolog.discourse.group/t/ann-swi-prolog-9-3-36/
