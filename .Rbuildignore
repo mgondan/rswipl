@@ -21,7 +21,6 @@
 ^inst/swipl/lib/swipl/test
 ^src/swipl/packages/xpce/
 ^src/swipl/packages/semweb/
-^src/swipl/packages/bdb/
 ^src/swipl/packages/sweep/
 ^src/swipl/packages/cppproxy/
 ^src/swipl/packages/paxos/
