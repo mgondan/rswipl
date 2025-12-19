@@ -7,7 +7,7 @@
 -static void
 -cleanup_thread(void *data)
 +static int
-+cleanup_thread(void *unused1, unsigned int unused2)
++cleanup_thread(void *unused1, unsigned long unused2)
  { schedule *sched = TheSchedule();
  
 -  (void)data;
