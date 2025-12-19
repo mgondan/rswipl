@@ -1,0 +1,19 @@
+--- src/pl-thread.c	2025-12-17 16:11:07.811024723 +0100
++++ /home/matthias/swipl-devel/src/pl-thread.c	2025-12-19 18:11:45.842374245 +0100
+@@ -3392,13 +3392,13 @@
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+ 
+ bool
+-PL_thread_at_exit(void (*function)(void *), void *closure, bool global)
++PL_thread_at_exit(int (*function)(void *, unsigned int), void *closure, bool global)
+ { GET_LD
+   event_list **list = global ? &GD->event.hook.onthreadexit
+ 			     : &LD->event.hook.onthreadexit;
+-  int (*func)() = (int(*)())function;
++  // int (*func)() = (int(*)())function;
+ 
+-  return register_event_function(list, 0, false, func, closure, 0);
++  return register_event_function(list, 0, false, function, closure, 0);
+ }
+ 
+ #if O_PLMT

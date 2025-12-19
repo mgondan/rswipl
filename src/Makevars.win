@@ -7,6 +7,10 @@ RcppExports.o: ../build/done
 rswipl.o: ../build/done
 
 ../build/done:
+	-patch -N -p2 < ../inst/patch/01-clib.patch
+	-patch -N -p2 < ../inst/patch/01-cpp.patch
+	-patch -N -p2 < ../inst/patch/01-swi.patch
+	-patch -N -p2 < ../inst/patch/01-thread.patch
 	-patch -N -p2 < ../inst/patch/02-clib.patch
 	-patch -N -p2 < ../inst/patch/03-cpp.patch
 	-patch -N -p2 < ../inst/patch/04-cpp.patch
