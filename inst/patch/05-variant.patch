@@ -1,0 +1,15 @@
+--- ../src/swipl-devel/src/pl-variant.c	2025-12-19 20:41:55.795370508 +0100
++++ ../src/swipl-devel/src/pl-variant.c	2025-12-19 20:54:19.101539093 +0100
+@@ -115,8 +115,10 @@
+   *rp = a->work.right;
+ 
+   a->work.arg++;
++  if ( a->work.left )
++    a->work.left++;
++  if ( a->work.right )
++    a->work.right++;
+-  a->work.left++;
+-  a->work.right++;
+ 
+   return true;
+ }
