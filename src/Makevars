@@ -6,9 +6,9 @@ CMAKE_VERSION := $(shell cmake --version 2>/dev/null)
 CMAKE_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/cmake --version 2>/dev/null)
 CTEST_VERSION := $(shell ctest --version 2>/dev/null)
 CTEST_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/ctest --version 2>/dev/null)
-PRELOAD_ASAN1=$(if $(findstring -fsanitize=address,$(CXX)),$(realpath $(shell $(CXX) -print-file-name=libasan.so)))
-PRELOAD_ASAN2=$(if $(findstring -fsanitize=address,$(CXX)),$(realpath $(shell $(CXX) -print-file-name=libstdc++.so)))
-PRELOAD_ASAN=$(if $(findstring -fsanitize=address,$(CXX)),LD_PRELOAD=$(PRELOAD_ASAN1) $(PRELOAD_ASAN2))
+PRELOAD_ASAN=$(if $(findstring -fsanitize=address,$(CXX)),$(realpath $(shell $(CXX) -print-file-name=libasan.so)))
+PRELOAD_STDCXX=$(if $(findstring -fsanitize=address,$(CXX)),$(realpath $(shell $(CXX) -print-file-name=libstdc++.so)))
+PRELOAD_CTEST=$(if $(findstring -fsanitize=address,$(CXX)),LD_PRELOAD=$(PRELOAD_ASAN):$(PRELOAD_STDCXX))
 CFLAGS1 = $(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))
 
 all: $(SHLIB)
@@ -38,8 +38,8 @@ else
 endif
 endif
 ifdef CTEST_VERSION
-	-(cd ../build ; LD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} $(PRELOAD_ASAN) ctest)
-	-(cd ../build ; LD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} $(PRELOAD_ASAN) ctest --rerun-failed --output-on-failure)
+	-(cd ../build ; LD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} $(PRELOAD_CTEST) ctest)
+	-(cd ../build ; LD_LIBRARY_PATH=$(CURDIR)/../build/src:${LD_LIBRARY_PATH} $(PRELOAD_CTEST) ctest --rerun-failed --output-on-failure)
 else
 ifdef CTEST_VERSION_MACOS
 	-(cd ../build ; /Applications/CMake.app/Contents/bin/ctest)
