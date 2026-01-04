@@ -6,10 +6,12 @@ CMAKE_VERSION := $(shell cmake --version 2>/dev/null)
 CMAKE_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/cmake --version 2>/dev/null)
 CTEST_VERSION := $(shell ctest --version 2>/dev/null)
 CTEST_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/ctest --version 2>/dev/null)
-GCC_ASAN=$(if $(and($(findstring gcc,$(CXX)),$(findstring -fsanitize=address,$(CXX)))),$(realpath $(shell $(CXX) -print-file-name=libasan.so)))
-CLANG_ASAN=$(if $(and($(findstring clang,$(CXX)),$(findstring -fsanitize=address,$(CXX)))),$(realpath $(shell $(CXX) -print-file-name=libclang_rt.asan-x86_64.so)))
-PRELOAD_STDCXX=$(if $(findstring -fsanitize=address,$(CXX)),$(realpath $(shell $(CXX) -print-file-name=libstdc++.so)))
-PRELOAD_CTEST=$(if $(GCC_ASAN),LD_PRELOAD=$(GCC_ASAN):$(PRELOAD_STDCXX)) $(if $(CLANG_ASAN),LD_PRELOAD=$(CLANG_ASAN):$(PRELOAD_STDCXX))
+
+CLANG_ASAN=$(if $(and $(findstring clang++,$(CXX)),$(findstring -fsanitize=address,$(CXX))),$(realpath $(shell $(CXX) -print-file-name=libclang_rt.asan-x86_64.so)))
+GCC_ASAN=$(if $(and $(if $(findstring clang++,$(CXX)),,true),$(findstring g++,$(CXX)),$(findstring -fsanitize=address,$(CXX))),$(realpath $(shell $(CXX) -print-file-name=libasan.so)))
+STDCXX=$(if $(findstring -fsanitize=address,$(CXX)),$(realpath $(shell $(CXX) -print-file-name=libstdc++.so)))
+PRELOAD_CTEST=$(if $(GCC_ASAN),LD_PRELOAD=$(GCC_ASAN):$(STDCXX)) $(if $(CLANG_ASAN),LD_PRELOAD=$(CLANG_ASAN):$(STDCXX))
+
 CFLAGS1 = $(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))
 
 all: $(SHLIB)
