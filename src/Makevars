@@ -6,9 +6,10 @@ CMAKE_VERSION := $(shell cmake --version 2>/dev/null)
 CMAKE_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/cmake --version 2>/dev/null)
 CTEST_VERSION := $(shell ctest --version 2>/dev/null)
 CTEST_VERSION_MACOS := $(shell /Applications/CMake.app/Contents/bin/ctest --version 2>/dev/null)
-PRELOAD_ASAN=$(if $(findstring -fsanitize=address,$(CXX)),$(realpath $(shell $(CXX) -print-file-name=libasan.so)))
+GCC_ASAN=$(if $(and($(findstring gcc,$(CXX)),$(findstring -fsanitize=address,$(CXX)))),$(realpath $(shell $(CXX) -print-file-name=libasan.so)))
+CLANG_ASAN=$(if $(and($(findstring clang,$(CXX)),$(findstring -fsanitize=address,$(CXX)))),$(realpath $(shell $(CXX) -print-file-name=libclang_rt.asan-x86_64.so)))
 PRELOAD_STDCXX=$(if $(findstring -fsanitize=address,$(CXX)),$(realpath $(shell $(CXX) -print-file-name=libstdc++.so)))
-PRELOAD_CTEST=$(if $(findstring -fsanitize=address,$(CXX)),LD_PRELOAD=$(PRELOAD_ASAN):$(PRELOAD_STDCXX))
+PRELOAD_CTEST=$(if $(GCC_ASAN),LD_PRELOAD=$(GCC_ASAN):$(PRELOAD_STDCXX)) $(if $(CLANG_ASAN),LD_PRELOAD=$(CLANG_ASAN):$(PRELOAD_STDCXX))
 CFLAGS1 = $(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))
 
 all: $(SHLIB)
@@ -30,7 +31,7 @@ ifdef CMAKE_VERSION
 	cmake --install ../build
 else
 ifdef CMAKE_VERSION_MACOS
-	(cd ../build ; CC="$(CC)" CXX="$(CXX)" CFLAGS="$(CFLAGS1)" CPPFLAGS="$(CPPFLAGS) -I/opt/R/arm64/include" LDFLAGS="-L/opt/R/arm64/lib $(LDFLAGS)" CXXFLAGS="$(CXXFLAGS)" /Applications/CMake.app/Contents/bin/cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DMACOSX_DEPENDENCIES_FROM=Homebrew -DSWIPL_INSTALL_IN_LIB=ON -DINSTALL_DOCUMENTATION=OFF -DBUILD_TESTING=ON -DINSTALL_TESTS=ON -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_GUI=OFF -DSWIPL_PACKAGES_ODBC=OFF -DSWIPL_PACKAGES_PYTHON=OFF -S ../src/swipl-devel)
+	(cd ../build ; CC="$(CC)" CXX="$(CXX)" CFLAGS="$(CFLAGS1)" CPPFLAGS="$(CPPFLAGS) -I/opt/R/arm64/include -I/Library/Developer/CommandLineTools/usr/include/c++/v1" LDFLAGS="-L/opt/R/arm64/lib $(LDFLAGS)" CXXFLAGS="$(CXXFLAGS)" /Applications/CMake.app/Contents/bin/cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../inst/swipl -DMACOSX_DEPENDENCIES_FROM=Homebrew -DSWIPL_INSTALL_IN_LIB=ON -DINSTALL_DOCUMENTATION=OFF -DBUILD_TESTING=ON -DINSTALL_TESTS=ON -DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_GUI=OFF -DSWIPL_PACKAGES_ODBC=OFF -DSWIPL_PACKAGES_PYTHON=OFF -S ../src/swipl-devel)
 	/Applications/CMake.app/Contents/bin/cmake --build ../build
 	/Applications/CMake.app/Contents/bin/cmake --install ../build
 else
