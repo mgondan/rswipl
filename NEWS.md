@@ -1,3 +1,9 @@
+# rswipl 10.1.1
+
+See https://swi-prolog.discourse.group/t/ann-swi-prolog-10-1-1/
+
+Fixes a few more ASAN issues.
+
 # rswipl 10.1.0
 
 See https://swi-prolog.discourse.group/t/ann-swi-prolog-10-1-0/
