@@ -1,3 +1,9 @@
+# rswipl 10.1.3
+
+See https://swi-prolog.discourse.group/t/ann-swi-prolog-10-1-3/
+
+Added unit test for chr
+
 # rswipl 10.1.2
 
 See https://swi-prolog.discourse.group/t/ann-swi-prolog-10-1-2/
