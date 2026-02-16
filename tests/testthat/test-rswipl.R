@@ -27,7 +27,7 @@ test_that("swipl:chr is working",
 
 test_that("swipl:cpp is working",
 {
-  query(call("test_installation", list(quote(package(cpp)))))
+  query(call("test_installation", list(quote(package(sgml)))))
   q <- submit()
   clear()
 

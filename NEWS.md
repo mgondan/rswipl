@@ -2,7 +2,7 @@
 
 See https://swi-prolog.discourse.group/t/ann-swi-prolog-10-1-3/
 
-Added unit tests for chr, cpp
+Added unit tests for chr, sgml
 
 # rswipl 10.1.2
 
