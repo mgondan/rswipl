@@ -19,6 +19,7 @@ Encoding: UTF-8
 SystemRequirements:
     GNU make,
     CMake (>= 3.20),
+    gmp (>= 4.2.3),
     pandoc,
     libarchive,
     libregex,
