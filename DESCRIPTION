@@ -10,8 +10,7 @@ Maintainer: Matthias Gondan <Matthias.Gondan-Rochon@uibk.ac.at>
 Description: Interface to 'SWI'-'Prolog', <https://www.swi-prolog.org/>. This package is normally not loaded directly, please refer to package 'rolog' instead. The purpose of this package is to provide the 'Prolog' runtime on systems that do not have a software installation of 'SWI'-'Prolog'.
 License: FreeBSD
 Imports:
-    Rcpp (>= 1.0.7),
-    gmp
+    Rcpp (>= 1.0.7)
 Depends: R (>= 4.3)
 URL: https://github.com/mgondan/rswipl
 BugReports: https://github.com/mgondan/rswipl/issues
