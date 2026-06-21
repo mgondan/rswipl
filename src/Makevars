@@ -14,7 +14,7 @@ UBSAN=$(if $(and $(if $(findstring clang++,$(CXX)),,true),$(findstring g++,$(CXX
 STDCXX=$(if $(findstring -fsanitize=,$(CXX)),$(realpath $(shell $(CXX) -print-file-name=libstdc++.so)))
 PRELOAD_CTEST=$(if $(STDCXX),LD_PRELOAD=$(ASAN):$(UBSAN):$(STDCXX))
 
-CFLAGS1=$(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))
+CFLAGS1=$(subst -flto,,$(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS))))
 
 all: $(SHLIB)
 
