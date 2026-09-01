@@ -15,7 +15,7 @@ rswipl.o: ../build/done
 	rm -f ../inst/swipl/bin/*.dll
 	( cd ../build ;\
 		CC="$(CC)" CFLAGS="$(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))"\
-		CXX="$(CXX)" CXXFLAGS="$(subst -std=gnu23,,$(CXXFLAGS))" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" cmake\
+		CXX="$(subst -std=gnu23,,$(CXX))" CXXFLAGS="$(CXXFLAGS)" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" cmake\
 		-DCMAKE_INSTALL_PREFIX=../inst/swipl\
 		-DSWIPL_PACKAGES_GUI=OFF -DSWIPL_PACKAGES_ODBC=OFF\
 		-DINSTALL_DOCUMENTATION=OFF -DSWIPL_PACKAGES_PYTHON=OFF\
