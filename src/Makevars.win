@@ -29,8 +29,6 @@ rswipl.o: ../build/done
 		-DCMAKE_BUILD_TYPE=Release -S ../src/swipl-devel )
 	# dos2unix all Makefiles
 	find ../build -name Makefile -exec sed -i 's/\r//' \{\} \;
-	CC="$(CC)" CFLAGS="$(subst -pedantic,,$(subst -Wstrict-prototypes,,$(CFLAGS)))"\
-	CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)"\
 	make -C ../build install
 	-( cd ../build ; ctest )
 	rm ../inst/swipl/bin/swipl.exe
