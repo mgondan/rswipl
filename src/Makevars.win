@@ -30,7 +30,7 @@ rswipl.o: ../build/done
 	# dos2unix all Makefiles
 	find ../build -name Makefile -exec sed -i 's/\r//' \{\} \;
 	make -C ../build install
-	-( cd ../build ; ctest )
+	-( cd ../build ; ctest --output-on-failure )
 	rm ../inst/swipl/bin/swipl.exe
 	rm ../inst/swipl/bin/swipl-win.exe
 	rm ../inst/swipl/bin/swipl-ld.exe
