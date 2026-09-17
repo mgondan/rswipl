@@ -1,8 +1,12 @@
+# rswipl 10.1.15
+
+see https://swi-prolog.discourse.group/t/ann-swi-prolog-10.1.15/
+
+do not forward CFLAGS to CXXFLAGS
+
 # rswipl 10.1.14
 
 see https://swi-prolog.discourse.group/t/ann-swi-prolog-10.1.14/
-
-do not forward CFLAGS to CXXFLAGS
 
 # rswipl 10.1.13
 
