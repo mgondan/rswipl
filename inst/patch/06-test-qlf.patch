@@ -1,0 +1,18 @@
+--- ../src/swipl-devel/tests/save/test_qlf.pl	2026-09-22 21:08:27.394574984 +0200
++++ ../src/swipl-devel/tests/save/test_qlf.pl	2026-09-24 00:00:19.889130540 +0200
+@@ -156,11 +156,12 @@
+      [ setup(compiled_file(Pl, Qlf)),
+        cleanup(remove_files([Pl, Qlf]))
+      ]) :-
++    '$file_hash'(Pl, Hash),
+     '$qlf_sources'(Qlf, Sources),
+-    memberchk(source(Pl, Hash), Sources),
++    memberchk(source(Pl1, Hash), Sources),
+     Hash =\= 0,
+-    '$file_hash'(Pl, Hash).
+-
++    same_file(Pl, Pl1).
++    
+ %       Reinstalling a tree, or checking it out again, gives every source
+ %       a time of its own.  Nothing changed, so nothing is recompiled.
+ 
