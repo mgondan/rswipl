@@ -14,6 +14,7 @@ rswipl.o: ../build/done
 	-patch -N -p2 < ../inst/patch/04-cpp.patch
 	-patch -N -p2 < ../inst/patch/05-test-load-context.patch
 	-patch -N -p2 < ../inst/patch/06-test-qlf.patch
+	-patch -N -p2 < ../inst/patch/07-init.patch
 	mkdir -p ../build
 	mkdir -p ../inst/swipl/bin
 	rm -f ../inst/swipl/bin/*.dll
