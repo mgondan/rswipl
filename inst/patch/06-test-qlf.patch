@@ -1,5 +1,5 @@
 --- ../src/swipl-devel/tests/save/test_qlf.pl	2026-09-22 21:08:27.394574984 +0200
-+++ ../src/swipl-devel/tests/save/test_qlf.pl.new	2026-09-24 08:11:20.241599176 +0200
++++ ../src/swipl-devel/tests/save/test_qlf.pl.new	2026-09-24 08:42:52.451697760 +0200
 @@ -156,11 +156,12 @@
       [ setup(compiled_file(Pl, Qlf)),
         cleanup(remove_files([Pl, Qlf]))
@@ -16,15 +16,7 @@
  %       Reinstalling a tree, or checking it out again, gives every source
  %       a time of its own.  Nothing changed, so nothing is recompiled.
  
-@@ -169,6 +170,7 @@
-        cleanup(remove_files([Pl, Qlf]))
-      ]) :-
-     touch(Pl, Qlf, 10),
-+    assertion(Pl = Qlf),
-     \+ '$qlf_out_of_date'(Pl, Qlf, _).
- 
- test(and_one_whose_content_changed_is,
-@@ -220,10 +222,11 @@
+@@ -220,10 +221,11 @@
       [ setup(compiled_with_dependency(Pl, Qlf, Dep)),
         cleanup(remove_files([Pl, Qlf, Dep]))
       ]) :-
