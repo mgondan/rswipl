@@ -1,3 +1,7 @@
+# rswipl 10.1.17
+
+see https://swi-prolog.discourse.group/t/ann-swi-prolog-10-1-17/
+
 # rswipl 10.1.16
 
 see https://swi-prolog.discourse.group/t/ann-swi-prolog-10-1-16/
